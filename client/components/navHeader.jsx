@@ -2,9 +2,13 @@ import React from 'react';
 import M from 'materialize-css';
 
 export default class NavHeader extends React.Component {
-  componentDidMount() {
-    const dropdowns = document.querySelectorAll('.dropdown-trigger');
+  constructor(props) {
+    super(props);
+    this.dropdown1 = React.createRef();
+    this.dropdown2 = React.createRef();
+  }
 
+  componentDidMount() {
     const options = {
       inDuration: 300,
       outDuration: 300,
@@ -12,13 +16,14 @@ export default class NavHeader extends React.Component {
       coverTrigger: false
     };
 
-    M.Dropdown.init(dropdowns, options);
+    M.Dropdown.init(this.dropdown1.current, options);
+    M.Dropdown.init(this.dropdown2.current, options);
   }
 
   render() {
     return (
     <>
-      <ul id="dropdown1" className="dropdown-content width-10">
+      <ul id="dropdown" className="dropdown-content width-10">
         <li>
           <a href="#stock" className="darkpink-text">Stock Item</a>
         </li>
@@ -27,7 +32,8 @@ export default class NavHeader extends React.Component {
         <div className="nav-wrapper white">
           <a className="nav-menu hide-on-med-and-up dropdown-trigger darkpink-text margin-left-1"
               href="#!"
-              data-target="dropdown1">
+              data-target="dropdown"
+              ref={this.dropdown1}>
               <span className="material-icons darkpink-text nav-link md-48">
                 menu
               </span>
@@ -39,7 +45,8 @@ export default class NavHeader extends React.Component {
             <li className="hide-on-small-only">
               <a className="dropdown-trigger darkpink-text"
                 href="#!"
-                data-target="dropdown1">
+                data-target="dropdown"
+                ref={this.dropdown2}>
                 <h6 className="nav-link">Admin Account</h6>
               </a>
             </li>
