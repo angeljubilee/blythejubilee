@@ -1,5 +1,5 @@
 import React from 'react';
-import { parseRoute } from '../../c0621-code-solutions/react-hash-routing/client/lib';
+import { parseRoute } from './lib';
 import NavHeader from './components/navHeader';
 import AddItemForm from './pages/addStock';
 import Home from './pages/home';
