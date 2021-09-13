@@ -1,0 +1,166 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+textarea {
+  border-style: 1px solid #b0b0b0;
+  border-radius: 6px;
+  width: 100%;
+  height: 10rem;
+}
+
+img {
+  width: 100%;
+}
+
+nav {
+  background-color: white;
+  box-shadow: none;
+  width: 100vw;
+  height: 8rem;
+}
+
+.material-icons {
+  cursor: pointer;
+}
+
+nav .material-icons {
+  position: relative;
+  top: 2rem;
+}
+
+input {
+  border-style: 1px solid gray;
+}
+
+button {
+  width: 100vw;
+  border-radius: 25px;
+  border: none;
+  background-color: #f95263;
+  font-size: large;
+  text-transform: uppercase;
+  color: white;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.brand-logo {
+  font-family: Pacifico, cursive;
+}
+
+.nav-link {
+  line-height: 8rem;
+  margin: 0;
+}
+
+.width-10 {
+  min-width: 10rem;
+}
+
+.padding-top-1 {
+  padding-top: 1rem;
+}
+
+.margin-top-1 {
+  margin-top: 1rem;
+}
+
+.margin-bottom-1 {
+  margin-bottom: 1rem;
+}
+
+.margin-left-1 {
+  margin-left: 1rem;
+}
+
+.btn-large:hover {
+  background-color: pink;
+}
+
+.line-height-8 {
+  line-height: 8rem;
+}
+
+.plus-icon {
+  position: relative;
+  top: 0.7rem;
+  right: 1rem;
+}
+
+.millenial-pink {
+  background-color: #ecb7bf;
+  color: white;
+}
+
+.chip {
+  background-color: #ecb7bf;
+  color: white;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  width: 100vw;
+  height: 50vh;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+@media screen and (min-width: 768px) {
+  nav {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  button {
+    width: 8rem;
+    float: right;
+  }
+
+  .flex-container {
+    width: 25%;
+    height: 30vh;
+  }
+
+  .container-max-70 {
+    width: 70%;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .brand-logo {
+    font-size: 36px;
+  }
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+input.visually-hidden:focus + label {
+  outline: thin dotted;
+}
+
+input.visually-hidden:focus-within + label {
+  outline: thin dotted;
+}
+
+.darkpink-text {
+  color: #f95263 !important;
+}
+
+.hidden {
+  display: none !important;
+}
