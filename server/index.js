@@ -80,42 +80,34 @@ app.post('/api/items', (req, res, next) => {
 
 app.get('/api/items', (req, res, next) => {
   const sql = `
-    select "itemId", "url", "title", "description", "price", "numInStock",
-    "Items"."createdAt", "type", "value"  from "Items" left join "Variations"
-    using ("itemId") order by "itemId" desc;
+    select i."itemId", i."url", i."title", i."description", i."price",
+      i."numInStock", i."createdAt",
+      (select json_agg(vars) from (
+        select "varId", "type", "value" from "Variations"
+          where "itemId" = i."itemId"
+        ) vars
+      ) as Variations
+    from "Items" as i
+    order by i."itemId" desc
   `;
 
   db.query(sql)
     .then(result => {
       const rows = result.rows;
-      const shopItems = [];
-      for (let i = 0; i < rows.length; i++) {
-        const { itemId, url, title, description, price, numInStock, createdAt } =
-          rows[i];
-        if (i > 0 && itemId === rows[i - 1].itemId) {
-          const type = rows[i].type;
-          if (type === rows[i - 1].type) {
-            shopItems[shopItems.length - 1].variations[type].push(rows[i].value);
+      const shopItems = rows.map(row => {
+        const { itemId, url, title, description, price, numInStock, createdAt } = row;
+        const vars = {};
+        for (let i = 0; i < row.variations.length; i++) {
+          const { type, value, varId } = row.variations[i];
+          if (vars[type]) {
+            vars[type].push({ value, varId });
           } else {
-            shopItems.variations[type] = [rows[i].value];
+            vars[type] = [{ value, varId }];
           }
-          continue;
-        }
-        const count = shopItems.push({
-          itemId,
-          url,
-          title,
-          description,
-          price,
-          numInStock,
-          createdAt
-        });
-        if (rows[i].type) {
-          shopItems[count - 1].variations = {};
-          shopItems[count - 1].variations[rows[i].type] = [rows[i].value];
         }
 
-      }
+        return { itemId, url, title, description, price, numInStock, createdAt, vars };
+      });
       res.status(200).json(shopItems);
     })
     .catch(err => {

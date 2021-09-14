@@ -34,7 +34,7 @@ export default class AddItemForm extends React.Component {
     })
       .then(res => res.json())
       .then(result => {
-        const path = `http://${window.location.host}${result.url}`;
+        const path = `${window.location.origin}${result.url}`;
         this.setState({ url: path });
       })
       .catch(err => {
