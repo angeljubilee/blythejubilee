@@ -76,6 +76,10 @@ button {
   margin-left: 1rem;
 }
 
+.margin-right-1 {
+  margin-right: 1rem;
+}
+
 .btn-large:hover {
   background-color: pink;
 }
@@ -127,7 +131,7 @@ button {
 
   .flex-container {
     width: 25%;
-    height: 30vh;
+    height: 35vh;
   }
 
   .container-max-70 {

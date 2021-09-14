@@ -15,7 +15,9 @@ const db = new pg.Pool({
 });
 
 const app = express();
+
 const jsonMiddleware = express.json();
+
 app.use(jsonMiddleware);
 
 app.use(staticMiddleware);
@@ -70,6 +72,43 @@ app.post('/api/items', (req, res, next) => {
         .catch(err => {
           next(err);
         });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+app.get('/api/items', (req, res, next) => {
+  const sql = `
+    select i."itemId", i."url", i."title", i."description", i."price",
+      i."numInStock", i."createdAt",
+      (select json_agg(vars) from (
+        select "varId", "type", "value" from "Variations"
+          where "itemId" = i."itemId"
+        ) vars
+      ) as Variations
+    from "Items" as i
+    order by i."itemId" desc
+  `;
+
+  db.query(sql)
+    .then(result => {
+      const rows = result.rows;
+      const shopItems = rows.map(row => {
+        const { itemId, url, title, description, price, numInStock, createdAt } = row;
+        const vars = {};
+        for (let i = 0; i < row.variations.length; i++) {
+          const { type, value, varId } = row.variations[i];
+          if (vars[type]) {
+            vars[type].push({ value, varId });
+          } else {
+            vars[type] = [{ value, varId }];
+          }
+        }
+
+        return { itemId, url, title, description, price, numInStock, createdAt, vars };
+      });
+      res.status(200).json(shopItems);
     })
     .catch(err => {
       next(err);
