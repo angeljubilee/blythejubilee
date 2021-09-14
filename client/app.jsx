@@ -3,6 +3,7 @@ import { parseRoute } from './lib';
 import NavHeader from './components/navHeader';
 import AddItemForm from './pages/addStock';
 import Home from './pages/home';
+import ShopItems from './pages/shopItems';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,6 +26,9 @@ export default class App extends React.Component {
       return <Home />;
     }
     if (route.path === 'stock') {
+      return <ShopItems />;
+    }
+    if (route.path === 'addStock') {
       return <AddItemForm />;
     }
   }

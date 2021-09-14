@@ -25,7 +25,7 @@ export default class NavHeader extends React.Component {
     <>
       <ul id="dropdown" className="dropdown-content width-10">
         <li>
-          <a href="#stock" className="darkpink-text">Stock Item</a>
+          <a href="#stock" className="darkpink-text">Stock</a>
         </li>
       </ul>
       <nav>
@@ -51,7 +51,7 @@ export default class NavHeader extends React.Component {
               </a>
             </li>
             <li>
-              <span className="material-icons darkpink-text nav-link md-48">
+              <span className="material-icons darkpink-text nav-link md-48 margin-right-1">
                 shopping_bag
               </span>
             </li>

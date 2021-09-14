@@ -1,5 +1,4 @@
 import React from 'react';
-import AddPhoto from '../components/addPhoto';
 
 export default class AddItemForm extends React.Component {
   constructor(props) {
@@ -26,6 +25,7 @@ export default class AddItemForm extends React.Component {
   }
 
   handleSubmitPhoto(event) {
+    event.preventDefault();
     const $form = event.target.closest('form');
     const form = new FormData($form);
     fetch('/api/uploads', {
@@ -34,8 +34,11 @@ export default class AddItemForm extends React.Component {
     })
       .then(res => res.json())
       .then(result => {
-        const path = `.${result.url}`;
+        const path = `http://${window.location.host}${result.url}`;
         this.setState({ url: path });
+      })
+      .catch(err => {
+        console.error(err);
       });
   }
 
@@ -55,9 +58,19 @@ export default class AddItemForm extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newItem)
-    });
-
-    event.target.reset();
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          title: '',
+          description: '',
+          url: '',
+          price: '',
+          numInStock: '',
+          size: '',
+          sizeList: []
+        });
+      });
   }
 
   handleTitleChange(event) {
@@ -95,8 +108,28 @@ export default class AddItemForm extends React.Component {
     return (
       <>
         <div className="container-max-70">
-          <AddPhoto url={this.state.url}
-            onChange={this.handleSubmitPhoto} />
+          {this.state.url
+            ? <div className="card">
+                <img src={this.state.url}></img>
+              </div>
+            : <div className="flex-container millenial-pink">
+                <form>
+                  <label htmlFor="image" className="center-align">
+                    <span className="material-icons white-text">
+                      photo_camera
+                    </span>
+                    <h6 className="white-text">Add Photo</h6>
+                  </label>
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    className="visually-hidden"
+                    onChange={this.handleSubmitPhoto}
+                  />
+                </form>
+              </div>
+         }
         </div>
         <form onSubmit={this.handleSubmit}>
           <div className="container margin-top-1">

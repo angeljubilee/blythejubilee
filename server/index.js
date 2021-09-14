@@ -15,7 +15,9 @@ const db = new pg.Pool({
 });
 
 const app = express();
+
 const jsonMiddleware = express.json();
+
 app.use(jsonMiddleware);
 
 app.use(staticMiddleware);
@@ -70,6 +72,51 @@ app.post('/api/items', (req, res, next) => {
         .catch(err => {
           next(err);
         });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+app.get('/api/items', (req, res, next) => {
+  const sql = `
+    select "itemId", "url", "title", "description", "price", "numInStock",
+    "Items"."createdAt", "type", "value"  from "Items" left join "Variations"
+    using ("itemId") order by "itemId";
+  `;
+
+  db.query(sql)
+    .then(result => {
+      const rows = result.rows;
+      const shopItems = [];
+      for (let i = 0; i < rows.length; i++) {
+        const { itemId, url, title, description, price, numInStock, createdAt } =
+          rows[i];
+        if (i > 0 && itemId === rows[i - 1].itemId) {
+          const type = rows[i].type;
+          if (type === rows[i - 1].type) {
+            shopItems[shopItems.length - 1].variations[type].push(rows[i].value);
+          } else {
+            shopItems.variations[type] = [rows[i].value];
+          }
+          continue;
+        }
+        const count = shopItems.push({
+          itemId,
+          url,
+          title,
+          description,
+          price,
+          numInStock,
+          createdAt
+        });
+        if (rows[i].type) {
+          shopItems[count - 1].variations = {};
+          shopItems[count - 1].variations[rows[i].type] = [rows[i].value];
+        }
+
+      }
+      res.status(200).json(shopItems);
     })
     .catch(err => {
       next(err);

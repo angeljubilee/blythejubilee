@@ -4,7 +4,7 @@ export default function AddPhoto(props) {
   return (
     props.url
       ? <div className="card">
-        <img src={this.state.url}></img>
+        <img src={props.url}></img>
       </div>
       : <div className="flex-container millenial-pink">
         <label htmlFor="image" className="center-align">
