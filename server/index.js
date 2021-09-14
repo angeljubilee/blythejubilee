@@ -82,7 +82,7 @@ app.get('/api/items', (req, res, next) => {
   const sql = `
     select "itemId", "url", "title", "description", "price", "numInStock",
     "Items"."createdAt", "type", "value"  from "Items" left join "Variations"
-    using ("itemId") order by "itemId";
+    using ("itemId") order by "itemId" desc;
   `;
 
   db.query(sql)
