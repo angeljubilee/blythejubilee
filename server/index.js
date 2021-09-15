@@ -63,11 +63,26 @@ app.post('/api/items', (req, res, next) => {
       const sizeArray = sizes.map(size => {
         return ['size', size, item.itemId];
       });
-      const sql2 = format('insert into "Variations" ("type", "value", "itemId") values %L',
+      const sql2 = format('insert into "Variations" ("type", "value", "itemId") values %L returning *',
         sizeArray);
       db.query(sql2)
         .then(result => {
+          if (!result.rows) {
+            res.status(201).json(item);
+          }
+          const vars = {};
+          for (let i = 0; i < result.rows.length; i++) {
+            const variation = result.rows[i];
+            const { type, value, varId } = variation;
+            if (!vars[type]) {
+              vars[type] = [{ value, varId }];
+            } else {
+              vars[variation.type].push({ value, varId });
+            }
+          }
+          item.vars = vars;
           res.status(201).json(item);
+
         })
         .catch(err => {
           next(err);
@@ -97,6 +112,9 @@ app.get('/api/items', (req, res, next) => {
       const shopItems = rows.map(row => {
         const { itemId, url, title, description, price, numInStock, createdAt } = row;
         const vars = {};
+        if (!row.variations) {
+          return { itemId, url, title, description, price, numInStock, createdAt, vars };
+        }
         for (let i = 0; i < row.variations.length; i++) {
           const { type, value, varId } = row.variations[i];
           if (vars[type]) {
@@ -105,7 +123,6 @@ app.get('/api/items', (req, res, next) => {
             vars[type] = [{ value, varId }];
           }
         }
-
         return { itemId, url, title, description, price, numInStock, createdAt, vars };
       });
       res.status(200).json(shopItems);

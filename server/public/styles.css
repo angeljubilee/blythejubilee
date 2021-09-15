@@ -56,6 +56,10 @@ button {
   margin: 0;
 }
 
+.bold-text {
+  font-weight: 700;
+}
+
 .width-10 {
   min-width: 10rem;
 }
