@@ -1,53 +1,31 @@
 import React from 'react';
 
-export default class ShopItems extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      isLoading: true
-    };
-  }
-
-  componentDidMount() {
-    fetch('/api/items')
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          items: data,
-          isLoading: false
-        });
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
-  render() {
-    const itemList = this.state.items.map(item => {
-      return (
+export default function StockItems(props) {
+  const itemList = props.stock.items.map(item => {
+    return (
       <li key={item.itemId}>
-          <div className="hide-on-med-and-up">
-        <div className="col s12 show-on-medium-and-down">
-          <div className="card horizontal">
-            <div className="card-image col s4">
-              <img src={item.url} />
-            </div>
-            <div className="card-stacked">
-              <div className="card-content">
-                <section>
-                  <h6>{item.title.slice(0, 35)}...</h6>
-                  <div>
-                    In Stock: {item.numInStock}
-                    <div className="darkpink-text">
-                      ${item.price}
+        <div className="hide-on-med-and-up">
+          <div className="col s12 show-on-medium-and-down">
+            <div className="card horizontal">
+              <div className="card-image col s4">
+                <img src={item.url} />
+              </div>
+              <div className="card-stacked">
+                <div className="card-content">
+                  <section>
+                    <h6>{item.title.slice(0, 35)}...</h6>
+                    <div>
+                      In Stock: {item.numInStock}
+                      <div className="darkpink-text">
+                        ${item.price}
+                      </div>
                     </div>
-                  </div>
-                </section>
+                  </section>
+                </div>
               </div>
             </div>
-          </div></div>
-        </div>
+          </div>
+      </div>
         <div className="hide-on-small-only">
           <div className="col m3">
             <div className="card medium">
@@ -75,11 +53,11 @@ export default class ShopItems extends React.Component {
           </div>
         </div>
       </li>);
-    });
+  });
 
-    return (
-      this.state.isLoading
-        ? <div className="preloader-wrapper active">
+  return (
+    props.stock.stockisLoading
+      ? <div className="preloader-wrapper active">
           <div className="spinner-layer spinner-red-only">
             <div className="circle-clipper left">
               <div className="circle"></div>
@@ -90,7 +68,7 @@ export default class ShopItems extends React.Component {
             </div>
           </div>
         </div>
-        : <div className="container">
+      : <div className="container">
           <div className="row">
             <div className="col s8">
               <h5>Shop Items</h5>
@@ -105,6 +83,5 @@ export default class ShopItems extends React.Component {
             {itemList}
           </ul>
         </div>
-    );
-  }
+  );
 }

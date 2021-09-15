@@ -61,6 +61,8 @@ export default class AddItemForm extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
+        this.props.handleNewItem(data);
+
         this.setState({
           title: '',
           description: '',
