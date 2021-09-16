@@ -6,7 +6,7 @@ export default function AddPhoto(props) {
       ? <div className="card">
         <img src={props.url}></img>
       </div>
-      : <div className="flex-container millenial-pink">
+      : <div className="flex-container box millenial-pink">
         <label htmlFor="image" className="center-align">
           <span className="material-icons white-text">photo_camera</span>
           <h6 className="white-text">Add Photo</h6>

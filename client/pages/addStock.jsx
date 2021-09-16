@@ -72,6 +72,7 @@ export default class AddItemForm extends React.Component {
           size: '',
           sizeList: []
         });
+        window.location.hash = 'stock';
       });
   }
 
@@ -114,7 +115,7 @@ export default class AddItemForm extends React.Component {
             ? <div className="card">
                 <img src={this.state.url}></img>
               </div>
-            : <div className="flex-container millenial-pink">
+            : <div className="flex-container box millenial-pink">
                 <form>
                   <label htmlFor="image" className="center-align">
                     <span className="material-icons white-text">

@@ -95,37 +95,68 @@ app.post('/api/items', (req, res, next) => {
 
 app.get('/api/items', (req, res, next) => {
   const sql = `
-    select i."itemId", i."url", i."title", i."description", i."price",
-      i."numInStock", i."createdAt",
+    select
+      "itemId",
+      "url",
+      "title",
+      "price",
+      "numInStock"
+    from "Items"
+    order by "itemId" desc
+  `;
+
+  db.query(sql)
+    .then(result => {
+      const rows = result.rows;
+      res.status(200).json(rows);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+app.get('/api/items/:id', (req, res, next) => {
+  const id = parseInt(req.params.id, 10);
+  if (!id) {
+    throw new ClientError(400, 'No item key');
+  }
+  const sql = `
+    select
+      i."itemId",
+      i."url",
+      i."title",
+      i."description",
+      i."price",
+      i."numInStock",
       (select json_agg(vars) from (
         select "varId", "type", "value" from "Variations"
           where "itemId" = i."itemId"
         ) vars
       ) as Variations
     from "Items" as i
-    order by i."itemId" desc
+    where "itemId" = $1;
   `;
-
-  db.query(sql)
+  const params = [id];
+  db.query(sql, params)
     .then(result => {
-      const rows = result.rows;
-      const shopItems = rows.map(row => {
-        const { itemId, url, title, description, price, numInStock, createdAt } = row;
-        const vars = {};
-        if (!row.variations) {
-          return { itemId, url, title, description, price, numInStock, createdAt, vars };
+      if (!result.rows[0]) {
+        throw new ClientError(404, `cannot find item ${id}`);
+      }
+      const row = result.rows[0];
+      const { itemId, url, title, description, price, numInStock } = row;
+      const vars = {};
+      if (!row.variations) {
+        return { itemId, url, title, description, price, numInStock, vars };
+      }
+      for (let i = 0; i < row.variations.length; i++) {
+        const { type, value, varId } = row.variations[i];
+        if (vars[type]) {
+          vars[type].push({ value, varId });
+        } else {
+          vars[type] = [{ value, varId }];
         }
-        for (let i = 0; i < row.variations.length; i++) {
-          const { type, value, varId } = row.variations[i];
-          if (vars[type]) {
-            vars[type].push({ value, varId });
-          } else {
-            vars[type] = [{ value, varId }];
-          }
-        }
-        return { itemId, url, title, description, price, numInStock, createdAt, vars };
-      });
-      res.status(200).json(shopItems);
+      }
+      res.status(200).json({ itemId, url, title, description, price, numInStock, vars });
     })
     .catch(err => {
       next(err);
