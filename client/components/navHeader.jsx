@@ -38,7 +38,7 @@ export default class NavHeader extends React.Component {
                 menu
               </span>
           </a>
-          <a href="#" className="brand-logo darkpink-text line-height-8 margin-left-1">
+          <a href="#" className="brand-logo darkpink-text line-height-8">
             BlytheJubilee
           </a>
           <ul className="right">
@@ -51,9 +51,12 @@ export default class NavHeader extends React.Component {
               </a>
             </li>
             <li>
-              <span className="material-icons darkpink-text nav-link md-48 margin-right-1">
-                shopping_bag
-              </span>
+              <a href="#cart">
+                <button className="cart-num">{this.props.cartNum}</button>
+                <span className="material-icons darkpink-text nav-link md-48">
+                  shopping_bag
+                </span>
+              </a>
             </li>
           </ul>
         </div>

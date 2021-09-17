@@ -5,7 +5,7 @@ export default function StockItems(props) {
     return (
       <li key={item.itemId}>
         <div className="hide-on-med-and-up">
-          <div className="col s12 show-on-medium-and-down">
+          <div className="col s12">
             <div className="card horizontal">
               <div className="card-image col s4">
                 <img src={item.url} />
@@ -25,29 +25,31 @@ export default function StockItems(props) {
               </div>
             </div>
           </div>
-      </div>
+        </div>
         <div className="hide-on-small-only">
-          <div className="col m3">
-            <div className="card medium">
-              <div className="card-image">
-                <img src={item.url} />
-              </div>
-              <div className="card-content">
-                <section>
-                  <div className="row">
-                    <div className="col s12">
-                      <h6>{item.title.slice(0, 54)}...</h6>
+          <div className="container">
+            <div className="col m3">
+              <div className="card medium">
+                <div className="card-image">
+                  <img src={item.url} />
+                </div>
+                <div className="card-content">
+                  <section>
+                    <div className="row">
+                      <div className="col s12">
+                        <h6>{item.title.slice(0, 54)}...</h6>
+                      </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col s5">
-                      In Stock: {item.numInStock}
+                    <div className="row">
+                      <div className="col s5">
+                        In Stock: {item.numInStock}
+                      </div>
+                      <div className="col s6 darkpink-text">
+                        ${item.price}
+                      </div>
                     </div>
-                    <div className="col s6 darkpink-text">
-                      ${item.price}
-                    </div>
-                  </div>
-                </section>
+                  </section>
+                </div>
               </div>
             </div>
           </div>

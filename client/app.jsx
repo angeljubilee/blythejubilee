@@ -4,19 +4,24 @@ import NavHeader from './components/navHeader';
 import AddItemForm from './pages/addStock';
 import Home from './pages/home';
 import StockItems from './pages/stockItems';
+import Cart from './pages/cart';
+import Item from './pages/item';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.addNewItem = this.addNewItem.bind(this);
+    this.addCartItem = this.addCartItem.bind(this);
+    this.removeCartItem = this.removeCartItem.bind(this);
 
     this.state = {
       route: parseRoute(window.location.hash),
       stock: {
         isLoading: true,
         items: []
-      }
+      },
+      cart: []
     };
   }
 
@@ -49,6 +54,16 @@ export default class App extends React.Component {
     });
   }
 
+  addCartItem(item) {
+    this.setState({ cart: [...this.state.cart, item] });
+  }
+
+  removeCartItem(itemId) {
+    this.setState({
+      cart: this.state.cart.filter(item => item.itemId !== itemId)
+    });
+  }
+
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
@@ -60,12 +75,20 @@ export default class App extends React.Component {
     if (route.path === 'addStock') {
       return <AddItemForm handleNewItem={this.addNewItem}/>;
     }
+    if (route.path === 'cart') {
+      return <Cart cart={this.state.cart}
+                   removeItem={this.removeCartItem}/>;
+    }
+    if (route.path === 'items') {
+      const itemId = route.params.get('itemId');
+      return <Item itemId={itemId} addToCart={this.addCartItem}/>;
+    }
   }
 
   render() {
     return (
       <>
-        <NavHeader/>
+        <NavHeader cartNum={this.state.cart.length}/>
         { this.renderPage() }
       </>
     );
