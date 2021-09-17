@@ -35,7 +35,7 @@ input {
 
 button {
   cursor: pointer;
-  width: 100vw;
+  width: 100%;
   border-radius: 25px;
   border: none;
   background-color: #f95263;
@@ -51,6 +51,10 @@ button {
 a {
   color: black;
   text-decoration: none;
+}
+
+.qty-input {
+  width: 8rem !important;
 }
 
 .label {
@@ -154,15 +158,22 @@ a {
   }
 
   button {
-    width: 10rem;
+    width: auto;
+    background-color: #f95263;
+    font-size: large;
+    text-transform: capitalize;
+    color: white;
+    padding: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 
   .float-right {
     float: right;
   }
 
-  .img-1-4 {
-    width: 25%;
+  .img-1-2 {
+    width: 50%;
   }
 
   .cart-num {
