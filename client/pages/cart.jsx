@@ -1,16 +1,54 @@
 import React from 'react';
+import PaypalButton from '../components/paypal';
+
+const styles = {
+  show: {
+    display: 'block'
+  },
+  hide: {
+    display: 'none'
+  }
+};
 
 export default class Cart extends React.Component {
 
   constructor(props) {
     super(props);
     this.handleClickClose = this.handleClickClose.bind(this);
+    this.guestCheckout = this.guestCheckout.bind(this);
+    this.handleOrder = this.handleOrder.bind(this);
+    this.state = { showPaypal: false };
   }
 
   handleClickClose(event) {
     const $li = event.target.closest('li');
     const itemId = $li.getAttribute('data-view');
     this.props.removeItem(parseInt(itemId));
+  }
+
+  guestCheckout(event) {
+    this.setState({ showPaypal: true });
+  }
+
+  handleOrder(id, name, email) {
+    const newOrder = {
+      transactionId: id,
+      userId: 1,
+      items: this.props.cart
+    };
+
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newOrder)
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.props.resetCart();
+        window.location.hash = `order?orderId=${data.orderId}`;
+      });
   }
 
   render() {
@@ -89,24 +127,39 @@ export default class Cart extends React.Component {
     const shipping = 3.99;
     const total = (subtotal + shipping).toFixed(2);
 
+    const checkinStyle = this.state.showPaypal ? styles.hide : styles.display;
+    const paypalStyle = this.state.showPaypal ? styles.display : styles.hide;
+
     return (
       this.props.cart.length
         ? <>
-          <div className="container hide-on-small-only">
+          <div className="container">
             <div className="row">
-              <h5 className="bold-text">Your Shopping bag</h5>
+              <div className="col s12">
+                <h5 className="bold-text">Your Shopping bag</h5>
+              </div>
             </div>
             <div className="row">
-              <div className="col s8">
+              <div className="col s12 m8">
                 <ul>
                   {items}
                 </ul>
               </div>
-              <div className="col s1"></div>
-              <div className="col s3">
-                <h6 className="bold-text">Order Summary</h6>
+              <div className="col m1"></div>
+              <div className="col s12 m3">
+                <div className="row">
+                  <h6 className="bold-text">Order Summary</h6>
+                </div>
                 <div className="row">
                   <div className="col s6">
+                    Subtotal
+                  </div>
+                  <div className="col s6 right-align">
+                    ${subtotal}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col s6 ">
                     Subtotal
                   </div>
                   <div className="col s6 right-align">
@@ -129,65 +182,21 @@ export default class Cart extends React.Component {
                     <p className="bold-text">${total}</p>
                   </div>
                 </div>
-                <button className="float-right">Login to checkout</button>
-                <button className="orange float-right margin-top-1">Checkout as Guest</button>
-              </div>
-            </div>
-          </div>
-          <div className="container hide-on-med-and-up">
-            <div className="row">
-              <div className="col s12">
-                <h5 className="bold-text">Your Shopping bag</h5>
-              </div>
-            </div>
-            <ul>
-              {items}
-            </ul>
-            <div className="row">
-              <h6 className="bold-text">Order Summary</h6>
-            </div>
-            <div className="col s12">
-              <div className="row">
-                <div className="col s6">
-                 Subtotal
+                <div className="row">
+                  <div className="col s12 m9 right" style={checkinStyle}>
+                    <button>Login to checkout</button>
+                    <button className="orange margin-top-1" onClick={this.guestCheckout}>
+                      Checkout as Guest
+                    </button>
+                  </div>
                 </div>
-                <div className="col s6 right-align">
-                  ${subtotal}
+                <div style={paypalStyle}>
+                  <PaypalButton numItems={this.props.cart.length}
+                    total={total}
+                    newOrder={this.handleOrder}/>
                 </div>
               </div>
             </div>
-            <div className="col s12">
-              <div className="row">
-                <div className="col s6 ">
-                  Subtotal
-                </div>
-                <div className="col s6 right-align">
-                  ${subtotal}
-                </div>
-            </div>
-            <div className="col s12">
-              <div className="col s4 row">
-                <div className="col s6">
-                  Shipping
-                </div>
-                <div className="col s6 right-align">
-                  ${shipping}
-                </div>
-              </div>
-            </div>
-            <div className="col s12">
-              <div className="col s4 row">
-                <div className="col s6 bold-text">
-                  <p>Order total ({this.props.cart.length} items)</p>
-                </div>
-                <div className="col s6 right-align">
-                  <p className="bold-text">${total}</p>
-                </div>
-              </div>
-            </div>
-            <button className="float-right">Login to checkout</button>
-            <button className="orange float-right">Checkout as Guest</button>
-          </div>
         </div>
         </>
         : <div className="container">

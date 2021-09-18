@@ -163,6 +163,52 @@ app.get('/api/items/:id', (req, res, next) => {
     });
 });
 
+app.post('/api/orders', (req, res, next) => {
+  if (!req.body.userId || !req.body.transactionId ||
+    !req.body.items) {
+    throw new ClientError(400, 'missing require fields');
+  }
+  const { userId, transactionId, items } = req.body;
+  const sql = `
+    insert into "Orders"
+    ("userId", "transactionId", "isCompleted")
+    values ($1, $2, $3)
+    returning *
+  `;
+  const params = [userId, transactionId, false];
+  db.query(sql, params)
+    .then(result => {
+      const [order] = result.rows;
+      if (!order) {
+        throw new ClientError(500, 'Internal server error');
+      }
+      const sizeArray = items.map(item => {
+        const vars = [];
+        if (item.vars) {
+          for (const key in item.vars) {
+            vars.push(item.vars[key].varId);
+          }
+        }
+        let var1 = null;
+        let var2 = null;
+        let var3 = null;
+        if (vars.length > 2) {
+          [var1, var2, var3] = vars;
+        } else if (vars.length > 1) {
+          [var1, var2] = vars;
+        } else if (vars.length === 1) {
+          [var1] = vars;
+        }
+        return [order.orderId, item.itemId, item.qty, var1, var2, var3];
+      });
+      const sql2 = format('insert into "OrderItems" ("orderId", "itemId", "qty", "varId1", "varId2", "varId3") values %L returning *',
+        sizeArray);
+      db.query(sql2)
+        .then(result => res.status(201).json(order))
+        .catch(err => next(err));
+    });
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
