@@ -21,7 +21,8 @@ export default class PaypalButton extends React.Component {
   onApprove(data, actions) {
     return actions.order.capture().then(details => {
       const { orderID } = data;
-      const { name, email } = details.payer;
+      const name = details.payer.name;
+      const email = details.payer.email_address;
       this.props.newOrder(orderID, name, email);
       this.setState({ paid: true });
     });

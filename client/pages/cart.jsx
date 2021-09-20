@@ -1,5 +1,7 @@
 import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 import PaypalButton from '../components/paypal';
+import Email from '../email';
 
 const styles = {
   show: {
@@ -31,10 +33,12 @@ export default class Cart extends React.Component {
   }
 
   handleOrder(id, name, email) {
+
+    const items = this.props.cart;
     const newOrder = {
       transactionId: id,
       userId: 1,
-      items: this.props.cart
+      items: items
     };
 
     fetch('/api/orders', {
@@ -46,9 +50,33 @@ export default class Cart extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.props.resetCart();
-        window.location.hash = `order?orderId=${data.orderId}`;
+        const orderId = data.orderId;
+        const content = ReactDOMServer.renderToStaticMarkup(<Email orderId={orderId} items={items}/>);
+
+        const emailData = {
+          name: name,
+          email: email,
+          orderId: orderId,
+          html: content
+        };
+        fetch('/api/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(emailData)
+        }).then(res => res.json())
+          .then(msgStatus => {
+            if (msgStatus.msg === 'success') {
+              window.location.hash = `order?orderId=${data.orderId}`;
+              this.props.resetCart();
+            } else if (msgStatus.msg === 'fail') {
+              console.error('Failed to send confirmation email');
+            }
+          });
+
       });
+
   }
 
   render() {
