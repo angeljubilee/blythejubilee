@@ -12,9 +12,6 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const createEmail = require('./createEmail');
 
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-
 const createTransporter = async () => {
   const oauth2Client = new OAuth2(
     process.env.OAUTH_CLIENTID,
@@ -55,18 +52,6 @@ const sendEmail = async mailOptions => {
   const emailTransporter = await createTransporter();
   await emailTransporter.sendMail(mailOptions);
 };
-
-const element = React.createElement('div', {},
-  React.createElement('h1', {}, 'Order Confirmation'),
-  React.createElement('div', {}, 'Hello Word'));
-const htmltest = ReactDOMServer.renderToStaticMarkup(element);
-
-sendEmail({
-  subject: 'Test',
-  to: 'angeljubilee@gmail.com',
-  from: process.env.EMAIL_USER,
-  html: htmltest
-});
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,

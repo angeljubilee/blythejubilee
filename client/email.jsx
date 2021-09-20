@@ -6,7 +6,6 @@ import Title from './elements/Title';
 import Body from './elements/Body';
 import OrderItems from './elements/OrderItems';
 import OrderSummary from './elements/OrderSummary';
-import Footer from './elements/Footer';
 
 const style = {
 
@@ -33,7 +32,6 @@ function Email({ orderId, items }) {
           <OrderItems items={items} />
           <OrderSummary items={items} />
         </Body>
-        <Footer />
       </Grid>
     </center>
   );
