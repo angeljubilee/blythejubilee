@@ -59,8 +59,8 @@ export default class Cart extends React.Component {
           method: 'POST',
           url: 'http://localhost:3001/send',
           data: {
-            name: this.state.name,
-            email: this.state.email,
+            name: name,
+            email: email,
             orderId: orderId,
             html: content
           }

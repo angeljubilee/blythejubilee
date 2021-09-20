@@ -78,7 +78,7 @@ function OrderItems(data) {
                     {item.title}
                   </p>
                   <p style={style.itemDetail}>
-                    {item.qty}
+                    Qty {item.qty}
                   </p>
                   <Grid>
                     <p style={style.itemPrice}>

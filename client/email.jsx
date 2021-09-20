@@ -28,7 +28,7 @@ function Email({ orderId, items }) {
       <Grid style={style.main}>
         <Header />
         <Body>
-          <Title>BlytheJubilee Order#{orderId} Confirmation</Title>
+          <Title>Order#{orderId}</Title>
           <OrderItems items={items} />
           <OrderSummary items={items} />
         </Body>

@@ -258,7 +258,6 @@ app.post('/api/orders', (req, res, next) => {
 });
 
 app.post('/send', (req, res, next) => {
-  const name = req.body.name;
   const email = req.body.email;
   const orderId = req.body.orderId;
   const content = req.body.html;
@@ -267,9 +266,9 @@ app.post('/send', (req, res, next) => {
     .then(emailHTML => {
 
       const mail = {
-        from: name,
+        from: process.env.EMAIL_USER,
         to: email,
-        subject: `Thank you for shopping at BlytheJubilee Order #${orderId}`,
+        subject: `Thank you for shopping at BlytheJubilee, Order #${orderId}`,
         html: emailHTML
       };
 

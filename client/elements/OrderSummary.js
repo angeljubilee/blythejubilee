@@ -15,22 +15,22 @@ const style = {
   },
 
   detail: {
-    fontSize: '14px',
-    margin: 0
+    fontSize: '16px',
+    margin: '20px 0 10px 0'
   },
 
   total: {
-    fontSize: '14px',
+    fontSize: '16px',
     fontWeight: 'bold',
-    margin: 0
+    margin: '20px 0 10px 0'
   }
 
 };
 
 function OrderSummary(data) {
   const { items } = data;
-  const subtotal = items.reduce((acc, item) => acc + item.price, 0);
-  const total = subtotal + 3.99;
+  const subtotal = items.reduce((acc, item) => acc + parseInt(item.price, 10), 0).toFixed(2);
+  const total = parseInt(subtotal + 3.99, 10).toFixed(2);
   return (
     <Grid style={style.container}>
       <Grid.Cell>
@@ -56,7 +56,7 @@ function OrderSummary(data) {
               Total
             </p>
             <p style={style.total}>
-              {total}
+              ${total}
             </p>
           </Grid.Row>
         </Grid>
