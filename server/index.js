@@ -2,10 +2,71 @@ require('dotenv/config');
 const pg = require('pg');
 const format = require('pg-format');
 const express = require('express');
+const cors = require('cors');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
+const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
+const createEmail = require('./createEmail');
+
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
+
+const createTransporter = async () => {
+  const oauth2Client = new OAuth2(
+    process.env.OAUTH_CLIENTID,
+    process.env.OAUTH_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.OAUTH_REFRESH_TOKEN
+  });
+
+  const accessToken = await new Promise((resolve, reject) => {
+    oauth2Client.getAccessToken((err, token) => {
+      if (err) {
+        console.error(err);
+      }
+      resolve(token);
+    });
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: process.env.EMAIL_USER,
+      accessToken,
+      clientId: process.env.OAUTH_CLIENTID,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET,
+      refreshToken: process.env.OAUTH_REFRESH_TOKEN
+    }
+  });
+
+  return transporter;
+};
+
+// emailOptions - who sends what to whom
+const sendEmail = async mailOptions => {
+  const emailTransporter = await createTransporter();
+  await emailTransporter.sendMail(mailOptions);
+};
+
+const element = React.createElement('div', {},
+  React.createElement('h1', {}, 'Order Confirmation'),
+  React.createElement('div', {}, 'Hello Word'));
+const htmltest = ReactDOMServer.renderToStaticMarkup(element);
+
+sendEmail({
+  subject: 'Test',
+  to: 'angeljubilee@gmail.com',
+  from: process.env.EMAIL_USER,
+  html: htmltest
+});
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -21,6 +82,8 @@ const jsonMiddleware = express.json();
 app.use(jsonMiddleware);
 
 app.use(staticMiddleware);
+
+app.use(cors());
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   if (req.fileValidationError) {
@@ -207,6 +270,37 @@ app.post('/api/orders', (req, res, next) => {
         .then(result => res.status(201).json(order))
         .catch(err => next(err));
     });
+});
+
+app.post('/send', (req, res, next) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const orderId = req.body.orderId;
+  const content = req.body.html;
+
+  createEmail(content)
+    .then(emailHTML => {
+
+      const mail = {
+        from: name,
+        to: email,
+        subject: `Thank you for shopping at BlytheJubilee Order #${orderId}`,
+        html: emailHTML
+      };
+
+      sendEmail(mail, (err, data) => {
+        if (err) {
+          res.json({
+            msg: 'fail'
+          });
+        } else {
+          res.json({
+            msg: 'success'
+          });
+        }
+      });
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
