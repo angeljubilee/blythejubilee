@@ -18,12 +18,11 @@ const style = {
 
 };
 
-function Title(data) {
-  const { children } = data;
+function Title(props) {
   return (
     <Grid style={style.wrapper}>
       <h1 style={style.title} className="title-heading">
-        {children}
+        Order #{props.orderId}
       </h1>
     </Grid>
   );

@@ -52,12 +52,13 @@ export default class Cart extends React.Component {
       .then(res => res.json())
       .then(data => {
         const orderId = data.orderId;
-        const emailElement = React.createElement(Email, { orderId, items });
-        const content = ReactDOMServer.renderToStaticMarkup(emailElement);
+        // const emailInfo = { orderId, items };
+        // const emailElement = React.createElement(Email, { orderId, items });
+        const content = ReactDOMServer.renderToStaticMarkup(<Email orderId={orderId} items={items}/>);
 
         axios({
           method: 'POST',
-          url: 'http://localhost:3001/send',
+          url: '/api/send',
           data: {
             name: name,
             email: email,
@@ -66,13 +67,12 @@ export default class Cart extends React.Component {
           }
         }).then(res => {
           if (res.data.msg === 'success') {
-            this.resetForm();
+            window.location.hash = `order?orderId=${data.orderId}`;
+            this.props.resetCart();
           } else if (res.data.msg === 'fail') {
             console.error('Failed to send confirmation email');
           }
         });
-
-        window.location.hash = `order?orderId=${data.orderId}`;
       });
 
   }

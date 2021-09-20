@@ -27,8 +27,8 @@ const style = {
 
 };
 
-function OrderSummary(data) {
-  const { items } = data;
+function OrderSummary(props) {
+  const items = props.items;
   const subtotal = items.reduce((acc, item) => acc + parseInt(item.price, 10), 0).toFixed(2);
   const total = parseInt(subtotal + 3.99, 10).toFixed(2);
   return (

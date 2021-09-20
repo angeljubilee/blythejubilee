@@ -22,15 +22,15 @@ const style = {
 
 };
 
-function Email({ orderId, items }) {
+function Email(props) {
   return (
     <center style={style.container}>
       <Grid style={style.main}>
         <Header />
         <Body>
-          <Title>Order#{orderId}</Title>
-          <OrderItems items={items} />
-          <OrderSummary items={items} />
+          <Title orderId={props.orderId} />
+          <OrderItems items={props.items} />
+          <OrderSummary items={props.items} />
         </Body>
       </Grid>
     </center>

@@ -62,14 +62,12 @@ function Icon(style, url) {
   );
 }
 
-function OrderItems(data) {
-  const { items } = data;
-
+function OrderItems(props) {
   return (
     <Grid style={style.container}>
       <Grid.Cell>
         <Grid style={style.itemsContainer}>
-          {items.map(item => (
+          {props.items.map(item => (
             <Grid style={style.itemContainer} key={item.itemId}>
               <Grid.Row>
                 <Icon style={style.itemIcon} url={item.url} />

@@ -2,7 +2,6 @@ require('dotenv/config');
 const pg = require('pg');
 const format = require('pg-format');
 const express = require('express');
-const cors = require('cors');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
@@ -67,8 +66,6 @@ const jsonMiddleware = express.json();
 app.use(jsonMiddleware);
 
 app.use(staticMiddleware);
-
-app.use(cors());
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   if (req.fileValidationError) {
@@ -257,7 +254,7 @@ app.post('/api/orders', (req, res, next) => {
     });
 });
 
-app.post('/send', (req, res, next) => {
+app.post('/api/send', (req, res, next) => {
   const email = req.body.email;
   const orderId = req.body.orderId;
   const content = req.body.html;
@@ -272,17 +269,15 @@ app.post('/send', (req, res, next) => {
         html: emailHTML
       };
 
-      sendEmail(mail, (err, data) => {
-        if (err) {
-          res.json({
-            msg: 'fail'
-          });
-        } else {
-          res.json({
-            msg: 'success'
-          });
-        }
-      });
+      sendEmail(mail)
+        .then(data => {
+          res.json({ msg: 'success' });
+
+        })
+        .catch(err => {
+          res.json({ msg: 'fail' });
+          next(err);
+        });
     })
     .catch(err => next(err));
 });
