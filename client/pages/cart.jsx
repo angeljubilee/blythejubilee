@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PaypalButton from '../components/paypal';
 import Email from '../email';
-import axios from 'axios';
 
 const styles = {
   show: {
@@ -52,27 +51,30 @@ export default class Cart extends React.Component {
       .then(res => res.json())
       .then(data => {
         const orderId = data.orderId;
-        // const emailInfo = { orderId, items };
-        // const emailElement = React.createElement(Email, { orderId, items });
         const content = ReactDOMServer.renderToStaticMarkup(<Email orderId={orderId} items={items}/>);
 
-        axios({
+        const emailData = {
+          name: name,
+          email: email,
+          orderId: orderId,
+          html: content
+        };
+        fetch('/api/send', {
           method: 'POST',
-          url: '/api/send',
-          data: {
-            name: name,
-            email: email,
-            orderId: orderId,
-            html: content
-          }
-        }).then(res => {
-          if (res.data.msg === 'success') {
-            window.location.hash = `order?orderId=${data.orderId}`;
-            this.props.resetCart();
-          } else if (res.data.msg === 'fail') {
-            console.error('Failed to send confirmation email');
-          }
-        });
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(emailData)
+        }).then(res => res.json())
+          .then(msgStatus => {
+            if (msgStatus.msg === 'success') {
+              window.location.hash = `order?orderId=${data.orderId}`;
+              this.props.resetCart();
+            } else if (msgStatus.msg === 'fail') {
+              console.error('Failed to send confirmation email');
+            }
+          });
+
       });
 
   }
