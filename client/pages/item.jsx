@@ -95,12 +95,14 @@ export default class Item extends React.Component {
 
     return (
         <div className="container-max-70">
-          <div className="product-details">
+          <div className="product-details margin-top-1">
             <div className="row">
-              <div className="col s12 m6">
-                <img className="img-1-2" src={this.state.item.url}></img>
+              <div className="col m1"></div>
+              <div className="col s12 m4">
+                <img src={this.state.item.url}></img>
               </div>
-              <div className="col s12 m6">
+              <div className="col m1"></div>
+              <div className="col s12 m5">
                 <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
                   <h6>{this.state.item.title}</h6>
                   <h6>{this.state.item.price}</h6>
@@ -123,6 +125,7 @@ export default class Item extends React.Component {
                   </div>
                 </form>
               </div>
+              <div className="col m1"></div>
             </div>
           </div>
         </div>

@@ -15,7 +15,7 @@ export default function Home(props) {
                 <div className="card-stacked">
                   <div className="card-content">
                     <section>
-                      <h6>{item.title.slice(0, 35)}...</h6>
+                      <h6>{item.title.slice(0, 39)}...</h6>
                       <div className="bold-text">
                         ${item.price}
                       </div>
@@ -37,7 +37,7 @@ export default function Home(props) {
                   <section>
                     <div className="row">
                       <div className="col s12">
-                        <h6>{item.title.slice(0, 54)}...</h6>
+                        <h6>{item.title.slice(0, 50)}...</h6>
                       </div>
                     </div>
                     <div className="row">

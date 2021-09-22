@@ -29,8 +29,12 @@ const style = {
 
 function OrderSummary(props) {
   const items = props.items;
-  const subtotal = items.reduce((acc, item) => acc + parseInt(item.price, 10), 0).toFixed(2);
-  const total = parseInt(subtotal + 3.99, 10).toFixed(2);
+  const subtotal = items.reduce((acc, item) => {
+    return acc + parseInt(item.price);
+  }, 0);
+  const shipping = 3.99;
+  const total = subtotal + shipping;
+
   return (
     <Grid style={style.container}>
       <Grid.Cell>
@@ -40,7 +44,7 @@ function OrderSummary(props) {
               Subtotal
             </p>
             <p style={style.detail}>
-              ${subtotal}
+              ${subtotal.toFixed(2)}
             </p>
           </Grid.Row>
           <Grid.Row>
@@ -48,7 +52,7 @@ function OrderSummary(props) {
               Shipping
             </p>
             <p style={style.detail}>
-              $3.99
+              ${shipping.toFixed(2)}
             </p>
           </Grid.Row>
           <Grid.Row>
@@ -56,7 +60,7 @@ function OrderSummary(props) {
               Total
             </p>
             <p style={style.total}>
-              ${total}
+              ${total.toFixed(2)}
             </p>
           </Grid.Row>
         </Grid>

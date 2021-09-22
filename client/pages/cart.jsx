@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PaypalButton from '../components/paypal';
+import CartItem from '../components/cartItem';
 import Email from '../email';
 
 const styles = {
@@ -74,80 +75,10 @@ export default class Cart extends React.Component {
               console.error('Failed to send confirmation email');
             }
           });
-
       });
-
   }
 
   render() {
-
-    const items = this.props.cart.map(item => {
-      return (
-        <li key={item.itemId} data-view={item.itemId}>
-          <div className="hide-on-med-and-up">
-            <div className="row">
-              <div className="col s4">
-                <img src={item.url}></img>
-              </div>
-              <div className="col s7">
-                <div className="row">
-                  <div className="col s12">
-                    <p>{item.title.slice(0, 40)}</p>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col s12 right-align">
-                    <p>${item.price}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col s1">
-                <span className="material-icons nav-link"
-                  onClick={this.handleClickClose}>
-                  close
-                </span>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s4 m2">
-                <p>Qty {item.qty}</p>
-              </div>
-            </div>
-          </div>
-          <div className="hide-on-small-only">
-              <div className="card horizontal">
-                <div className="card-image col s2">
-                  <img src={item.url}></img>
-                </div>
-                <div className="card-stacked">
-                  <div className="card-content">
-                    <div className="row">
-                      <div className="col s8">
-                        <p>{item.title}</p>
-                      </div>
-                      <div className="col s2">
-                        <p>Qty {item.qty}</p>
-                      </div>
-                      <div className="col s2">
-                        <p>${item.price}</p>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col s1">
-                        <a href="#cart"
-                           onClick={this.handleClickClose}>
-                          Delete
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-      );
-
-    });
 
     const subtotal = this.props.cart.reduce((acc, item) => {
       return acc + parseInt(item.price);
@@ -168,13 +99,13 @@ export default class Cart extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="col s12 m8">
+              <div className="col s12 m7">
                 <ul>
-                  {items}
+                  <CartItem cart={this.props.cart} handleClose={this.handleClickClose} />
                 </ul>
               </div>
               <div className="col m1"></div>
-              <div className="col s12 m3">
+              <div className="col s12 m4">
                 <div className="row">
                   <h6 className="bold-text">Order Summary</h6>
                 </div>
@@ -183,7 +114,7 @@ export default class Cart extends React.Component {
                     Subtotal
                   </div>
                   <div className="col s6 right-align">
-                    ${subtotal}
+                    ${subtotal.toFixed(2)}
                   </div>
                 </div>
                 <div className="row">
@@ -203,15 +134,15 @@ export default class Cart extends React.Component {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col s6 bold-text">
-                    <p>Order total ({this.props.cart.length} items)</p>
+                  <div className="col s6">
+                    <h6 className="bold-text">Order total ({this.props.cart.length} items)</h6>
                   </div>
                   <div className="col s6 right-align">
                     <p className="bold-text">${total}</p>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col s12 m9 right" style={checkinStyle}>
+                  <div className="col s12 m6 right" style={checkinStyle}>
                     <button>Login to checkout</button>
                     <button className="orange margin-top-1" onClick={this.guestCheckout}>
                       Checkout as Guest
