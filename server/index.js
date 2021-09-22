@@ -1,5 +1,7 @@
 require('dotenv/config');
 const pg = require('pg');
+const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
 const format = require('pg-format');
 const express = require('express');
 const ClientError = require('./client-error');
@@ -67,13 +69,71 @@ app.use(jsonMiddleware);
 
 app.use(staticMiddleware);
 
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { email, name, password } = req.body;
+  if (!email || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const sql = `
+        insert into "Users" ("email", "name", "hashedPassword" )
+        values ($1, $2)
+        returning "userId"
+      `;
+      const params = [email, name, hashedPassword];
+      return db.query(sql, params);
+    })
+    .then(result => {
+      const [user] = result.rows;
+      res.status(201).json(user);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/auth/sign-in', (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const sql = `
+    select "email", "hashedPassword"
+      from "Users"
+      where "email" = $1
+  `;
+  const params = [email];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      if (!user) {
+        throw new ClientError(401, 'invalid login');
+      }
+      const { userId, hashedPassword } = user;
+      return argon2
+        .verify(hashedPassword, password)
+        .then(isMatching => {
+          if (!isMatching) {
+            throw new ClientError(401, 'invalid login');
+          }
+          const payload = { userId, email };
+          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+          res.json({ token, user: payload });
+        });
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
+
+  const url = req.file.location;
+
   if (req.fileValidationError) {
     return res.send(req.fileValidationError);
   } else if (!req.file) {
     return res.send('Please select an image to upload');
   }
-  const url = `/images/${req.file.filename}`;
+
   res.status(201).json({ url });
 });
 

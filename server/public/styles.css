@@ -176,6 +176,10 @@ a {
     width: 50%;
   }
 
+  .add-photo {
+    cursor: pointer;
+  }
+
   .cart-num {
     position: relative;
     left: 2.59rem;

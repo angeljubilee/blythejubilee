@@ -34,8 +34,8 @@ export default class AddItemForm extends React.Component {
     })
       .then(res => res.json())
       .then(result => {
-        const path = `${window.location.origin}${result.url}`;
-        this.setState({ url: path });
+        const url = `${result.url}`;
+        this.setState({ url: url });
       })
       .catch(err => {
         console.error(err);
@@ -116,12 +116,14 @@ export default class AddItemForm extends React.Component {
                 <img src={this.state.url}></img>
               </div>
             : <div className="flex-container box millenial-pink">
-                <form>
+                <form className="no-autoinit">
                   <label htmlFor="image" className="center-align">
-                    <span className="material-icons white-text">
-                      photo_camera
-                    </span>
-                    <h6 className="white-text">Add Photo</h6>
+                    <div className="add-photo">
+                      <span className="material-icons white-text">
+                        photo_camera
+                      </span>
+                      <h6 className="white-text">Add Photo</h6>
+                    </div>
                   </label>
                   <input
                     type="file"
