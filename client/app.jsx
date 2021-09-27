@@ -39,6 +39,7 @@ export default class App extends React.Component {
       .then(data => {
         this.setState({
           stock: {
+            ...this.state.stock,
             items: data,
             loading: false
           }
@@ -46,13 +47,19 @@ export default class App extends React.Component {
       })
       .catch(err => {
         console.error(err);
-        this.setState({ error: true });
+        this.setState({
+          stock: {
+            ...this.state.stock,
+            error: true
+          }
+        });
       });
   }
 
   addNewItem(newItem) {
     this.setState({
       stock: {
+        ...this.state.stock,
         items: [...this.state.stock.items, newItem]
       }
     });

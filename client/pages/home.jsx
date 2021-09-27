@@ -3,7 +3,8 @@ import ErrorMessage from '../components/error-message';
 import LoadingSpinner from '../components/loading-spinner';
 
 export default function Home(props) {
-  if (props.stock.err) {
+
+  if (props.stock.error) {
     return <ErrorMessage msg="Connection error" />;
   }
 

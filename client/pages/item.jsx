@@ -68,7 +68,7 @@ export default class Item extends React.Component {
   }
 
   render() {
-    if (this.state.error) {
+    if (this.state.stock.error) {
       return <ErrorMessage msg="Connection error" />;
     }
 

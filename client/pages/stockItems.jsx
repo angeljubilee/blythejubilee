@@ -4,11 +4,11 @@ import LoadingSpinner from '../components/loading-spinner';
 
 export default function StockItems(props) {
 
-  if (props.state.error) {
-    <ErrorMessage msg="Connection error" />;
+  if (props.stock.error) {
+    return <ErrorMessage msg="Connection error" />;
   }
 
-  if (!props.state.loading && !props.state.item) {
+  if (!props.stock.loading && !props.stock.items.length) {
     return (<div>No items in the shop.</div>);
   }
 
