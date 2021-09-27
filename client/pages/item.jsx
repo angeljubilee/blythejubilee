@@ -110,7 +110,21 @@ export default class Item extends React.Component {
     }
 
     return (
-      <div className="container-max-70">
+      this.state.loading
+        ? <div className="flex-container">
+            <div className="preloader-wrapper active">
+              <div className="spinner-layer spinner-red-only">
+                <div className="circle-clipper left">
+                  <div className="circle"></div>
+                </div><div className="gap-patch">
+                  <div className="circle"></div>
+                </div><div className="circle-clipper right">
+                  <div className="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        : <div className="container-max-70">
         <div className="product-details margin-top-1">
           <div className="row">
             <div className="col m1"></div>
