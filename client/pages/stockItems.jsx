@@ -8,10 +8,6 @@ export default function StockItems(props) {
     return <ErrorMessage msg="Connection error" />;
   }
 
-  if (!props.stock.loading && !props.stock.items.length) {
-    return (<div>No items in the shop.</div>);
-  }
-
   const itemList = props.stock.items.map(item => {
     return (
       <li key={item.itemId}>
