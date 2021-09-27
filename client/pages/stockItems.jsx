@@ -1,6 +1,12 @@
 import React from 'react';
+import ErrorMessage from '../components/error-message';
+import LoadingSpinner from '../components/loading-spinner';
 
 export default function StockItems(props) {
+
+  if (props.state.error) {
+    <ErrorMessage msg="Connection error" />;
+  }
 
   if (!props.state.loading && !props.state.item) {
     return (<div>No items in the shop.</div>);
@@ -58,17 +64,7 @@ export default function StockItems(props) {
 
   return (
     props.stock.loading
-      ? <div className="preloader-wrapper active">
-          <div className="spinner-layer spinner-red-only">
-            <div className="circle-clipper left">
-              <div className="circle"></div>
-            </div><div className="gap-patch">
-              <div className="circle"></div>
-            </div><div className="circle-clipper right">
-              <div className="circle"></div>
-            </div>
-          </div>
-        </div>
+      ? <LoadingSpinner />
       : <div className="container">
           <div className="row">
             <div className="col s8">

@@ -3,6 +3,8 @@ import ReactDOMServer from 'react-dom/server';
 import PaypalButton from '../components/paypal';
 import CartItem from '../components/cartItem';
 import Email from '../email';
+import LoadingSpinner from '../components/loading-spinner';
+import ErrorMessage from '../components/error-message';
 
 const styles = {
   show: {
@@ -20,6 +22,8 @@ export default class Cart extends React.Component {
     this.handleClickClose = this.handleClickClose.bind(this);
     this.guestCheckout = this.guestCheckout.bind(this);
     this.handleOrder = this.handleOrder.bind(this);
+    this.handleError = this.handleError.bind(this);
+
     this.state = {
       showPaypal: false,
       loading: false,
@@ -76,21 +80,24 @@ export default class Cart extends React.Component {
             if (msgStatus.msg === 'success') {
               this.setState({ loading: false });
               this.props.resetCart();
-              window.location.hash = `order?orderId=${data.orderId}`;
             } else if (msgStatus.msg === 'fail') {
               console.error('Failed to send confirmation email');
-              window.location.hash = 'error';
             }
+            window.location.hash = `order?orderId=${data.orderId}`;
           })
           .catch(err => {
             console.error(err);
-            window.location.hash = 'error';
+            this.setState({ error: true });
           });
       })
       .catch(err => {
         console.error(err);
-        window.location.hash = 'error';
+        this.setState({ error: true });
       });
+  }
+
+  handleError() {
+    this.setState({ error: true });
   }
 
   render() {
@@ -104,24 +111,32 @@ export default class Cart extends React.Component {
     const checkinStyle = this.state.showPaypal ? styles.hide : styles.display;
     const paypalStyle = this.state.showPaypal ? styles.display : styles.hide;
 
-    const cartStyle = this.state.loading ? styles.hide : styles.display;
-    const loadingStyle = this.state.loading ? styles.display : styles.hide;
+    let cartStyle;
+    let loadingStyle;
+    let errorStyle;
+
+    if (this.state.error) {
+      errorStyle = styles.display;
+      loadingStyle = styles.hide;
+      cartStyle = styles.hide;
+    } else if (this.state.loading) {
+      loadingStyle = styles.display;
+      errorStyle = styles.hide;
+      cartStyle = styles.hide;
+    } else {
+      cartStyle = styles.display;
+      loadingStyle = styles.hide;
+      errorStyle = styles.hide;
+    }
 
     return (
       this.props.cart.length
         ? <>
+            <div style={errorStyle}>
+              <ErrorMessage msg='Transaction error' />
+            </div>
             <div className="flex-container" style={loadingStyle}>
-              <div className="preloader-wrapper active">
-                <div className="spinner-layer spinner-red-only">
-                  <div className="circle-clipper left">
-                    <div className="circle"></div>
-                  </div><div className="gap-patch">
-                    <div className="circle"></div>
-                  </div><div className="circle-clipper right">
-                    <div className="circle"></div>
-                  </div>
-                </div>
-              </div>
+              <LoadingSpinner />
             </div>
             <div className="container" style={cartStyle}>
               <div className="row">
@@ -183,7 +198,8 @@ export default class Cart extends React.Component {
                   <div style={paypalStyle}>
                     <PaypalButton numItems={this.props.cart.length}
                       total={total}
-                      newOrder={this.handleOrder}/>
+                      newOrder={this.handleOrder}
+                      error={this.handleError} />
                   </div>
                 </div>
               </div>

@@ -24,8 +24,12 @@ export default class PaypalButton extends React.Component {
       const name = details.payer.name;
       const email = details.payer.email_address;
       this.props.newOrder(orderID, name, email);
-      this.setState({ paid: true });
     });
+  }
+
+  onError(err) {
+    console.error(err);
+    this.props.error();
   }
 
   render() {
@@ -33,6 +37,7 @@ export default class PaypalButton extends React.Component {
       <PayPalButton
         createOrder={(data, actions) => this.createOrder(data, actions)}
         onApprove={(data, actions) => this.onApprove(data, actions)}
+        onError={err => this.onError(err)}
       />
     );
   }

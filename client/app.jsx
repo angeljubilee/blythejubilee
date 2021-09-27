@@ -7,7 +7,6 @@ import StockItems from './pages/stockItems';
 import Cart from './pages/cart';
 import Item from './pages/item';
 import Order from './pages/order';
-import ErrorMessage from './components/error';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -75,10 +74,6 @@ export default class App extends React.Component {
 
   renderPage() {
 
-    if (this.state.stock.error) {
-      return <ErrorMessage />;
-    }
-
     const { route } = this.state;
 
     if (route.path === '') {
@@ -104,9 +99,6 @@ export default class App extends React.Component {
     if (route.path === 'order') {
       const orderId = route.params.get('orderId');
       return <Order orderId={orderId}/>;
-    }
-    if (route.path === 'error') {
-      return <ErrorMessage />;
     }
   }
 

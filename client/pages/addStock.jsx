@@ -1,4 +1,6 @@
 import React from 'react';
+import ErrorMessage from '../components/error-message';
+import LoadingSpinner from '../components/loading-spinner';
 
 export default class AddItemForm extends React.Component {
   constructor(props) {
@@ -112,8 +114,9 @@ export default class AddItemForm extends React.Component {
 
   render() {
     if (this.state.error) {
-      return <div>Error loading photo</div>;
+      return <ErrorMessage msg="Error loading photo" />;
     }
+
     const chips = this.state.sizeList.map((size, index) => {
       return <div className="chip" key={index}>{size}</div>;
     });
@@ -126,17 +129,7 @@ export default class AddItemForm extends React.Component {
                 <img src={this.state.url}></img>
               </div>
             : this.state.loading
-              ? <div className="preloader-wrapper active">
-                  <div className="spinner-layer spinner-red-only">
-                    <div className="circle-clipper left">
-                      <div className="circle"></div>
-                    </div><div className="gap-patch">
-                      <div className="circle"></div>
-                    </div><div className="circle-clipper right">
-                      <div className="circle"></div>
-                    </div>
-                  </div>
-                </div>
+              ? <LoadingSpinner />
               : <div className="flex-container box millenial-pink">
                   <form className="no-autoinit">
                     <label htmlFor="image" className="center-align">

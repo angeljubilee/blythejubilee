@@ -1,6 +1,7 @@
 import React from 'react';
 import M from 'materialize-css';
-import ErrorMessage from '../components/error';
+import LoadingSpinner from '../components/loading-spinner';
+import ErrorMessage from '../components/error-message';
 
 export default class Item extends React.Component {
   constructor(props) {
@@ -68,7 +69,7 @@ export default class Item extends React.Component {
 
   render() {
     if (this.state.error) {
-      return <ErrorMessage />;
+      return <ErrorMessage msg="Connection error" />;
     }
 
     if (!this.state.item) {
@@ -111,54 +112,42 @@ export default class Item extends React.Component {
 
     return (
       this.state.loading
-        ? <div className="flex-container">
-            <div className="preloader-wrapper active">
-              <div className="spinner-layer spinner-red-only">
-                <div className="circle-clipper left">
-                  <div className="circle"></div>
-                </div><div className="gap-patch">
-                  <div className="circle"></div>
-                </div><div className="circle-clipper right">
-                  <div className="circle"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+        ? <LoadingSpinner />
         : <div className="container-max-70">
-        <div className="product-details margin-top-1">
-          <div className="row">
-            <div className="col m1"></div>
-            <div className="col s12 m4">
-              <img src={this.state.item.url}></img>
+          <div className="product-details margin-top-1">
+            <div className="row">
+              <div className="col m1"></div>
+              <div className="col s12 m4">
+                <img src={this.state.item.url}></img>
+              </div>
+              <div className="col m1"></div>
+              <div className="col s12 m5">
+                <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
+                  <h6>{this.state.item.title}</h6>
+                  <h6>{this.state.item.price}</h6>
+                  {variations}
+                  <div className="row">
+                    <div className="col s4 m2">
+                      <label>Qty</label>
+                      <select ref={this.select1} onChange={this.addQuantity} className="qty-input">
+                        <QtyOptions num={this.state.item.numInStock} />
+                      </select>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col s11 hide-on-med-and-up">
+                      <button>Add to Cart</button>
+                    </div>
+                    <div className="col s4 right hide-on-small-only">
+                      <button>Add to Cart</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div className="col m1"></div>
             </div>
-            <div className="col m1"></div>
-            <div className="col s12 m5">
-              <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
-                <h6>{this.state.item.title}</h6>
-                <h6>{this.state.item.price}</h6>
-                {variations}
-                <div className="row">
-                  <div className="col s4 m2">
-                    <label>Qty</label>
-                    <select ref={this.select1} onChange={this.addQuantity} className="qty-input">
-                      <QtyOptions num={this.state.item.numInStock} />
-                    </select>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col s11 hide-on-med-and-up">
-                    <button>Add to Cart</button>
-                  </div>
-                  <div className="col s4 right hide-on-small-only">
-                    <button>Add to Cart</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div className="col m1"></div>
           </div>
         </div>
-      </div>
     );
   }
 }
