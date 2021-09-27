@@ -20,7 +20,8 @@ export default class App extends React.Component {
     this.state = {
       route: parseRoute(window.location.hash),
       stock: {
-        isLoading: true,
+        loading: true,
+        error: false,
         items: []
       },
       cart: []
@@ -38,19 +39,27 @@ export default class App extends React.Component {
       .then(data => {
         this.setState({
           stock: {
+            ...this.state.stock,
             items: data,
-            isLoading: false
+            loading: false
           }
         });
       })
       .catch(err => {
         console.error(err);
+        this.setState({
+          stock: {
+            ...this.state.stock,
+            error: true
+          }
+        });
       });
   }
 
   addNewItem(newItem) {
     this.setState({
       stock: {
+        ...this.state.stock,
         items: [...this.state.stock.items, newItem]
       }
     });
@@ -71,9 +80,13 @@ export default class App extends React.Component {
   }
 
   renderPage() {
+
     const { route } = this.state;
+
     if (route.path === '') {
-      return <Home stock={this.state.stock}/>;
+      return (
+        <Home stock={this.state.stock}/>
+      );
     }
     if (route.path === 'stock') {
       return <StockItems stock={this.state.stock}/>;

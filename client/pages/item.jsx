@@ -1,10 +1,14 @@
 import React from 'react';
 import M from 'materialize-css';
+import LoadingSpinner from '../components/loading-spinner';
+import ErrorMessage from '../components/error-message';
 
 export default class Item extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
+      error: false,
       item: null,
       vars: null,
       qty: 1
@@ -25,9 +29,17 @@ export default class Item extends React.Component {
         for (const key in item.vars) {
           defaultVars[key] = item.vars[key][0];
         }
-        this.setState({ vars: defaultVars });
+        this.setState({
+          vars: defaultVars,
+          loading: false
+        });
         this.setState({ item });
+      })
+      .catch(error => {
+        console.error(error);
+        this.setState({ error: true });
       });
+    this.setState({ loading: true });
   }
 
   componentDidUpdate() {
@@ -56,9 +68,14 @@ export default class Item extends React.Component {
   }
 
   render() {
+    if (this.state.stock.error) {
+      return <ErrorMessage msg="Connection error" />;
+    }
+
     if (!this.state.item) {
       return <div>Product not found</div>;
     }
+
     const opts = {};
     for (const key in this.state.item.vars) {
       const opt = this.state.item.vars[key].map((variation, index) => {
@@ -94,7 +111,9 @@ export default class Item extends React.Component {
     }
 
     return (
-        <div className="container-max-70">
+      this.state.loading
+        ? <LoadingSpinner />
+        : <div className="container-max-70">
           <div className="product-details margin-top-1">
             <div className="row">
               <div className="col m1"></div>

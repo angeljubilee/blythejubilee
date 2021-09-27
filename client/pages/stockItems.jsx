@@ -1,6 +1,17 @@
 import React from 'react';
+import ErrorMessage from '../components/error-message';
+import LoadingSpinner from '../components/loading-spinner';
 
 export default function StockItems(props) {
+
+  if (props.stock.error) {
+    return <ErrorMessage msg="Connection error" />;
+  }
+
+  if (!props.stock.loading && !props.stock.items.length) {
+    return (<div>No items in the shop.</div>);
+  }
+
   const itemList = props.stock.items.map(item => {
     return (
       <li key={item.itemId}>
@@ -35,16 +46,10 @@ export default function StockItems(props) {
                 </div>
                 <div className="card-content">
                   <section>
-                    <div className="row">
-                      <div className="col s12">
-                        <h6>{item.title.slice(0, 54)}...</h6>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col s5">
-                        In Stock: {item.numInStock}
-                      </div>
-                      <div className="col s6 darkpink-text">
+                    <p>{item.title.slice(0, 40)}...</p>
+                    <div>
+                      In Stock: {item.numInStock}
+                      <div className="darkpink-text">
                         ${item.price}
                       </div>
                     </div>
@@ -58,18 +63,8 @@ export default function StockItems(props) {
   });
 
   return (
-    props.stock.stockisLoading
-      ? <div className="preloader-wrapper active">
-          <div className="spinner-layer spinner-red-only">
-            <div className="circle-clipper left">
-              <div className="circle"></div>
-            </div><div className="gap-patch">
-              <div className="circle"></div>
-            </div><div className="circle-clipper right">
-              <div className="circle"></div>
-            </div>
-          </div>
-        </div>
+    props.stock.loading
+      ? <LoadingSpinner />
       : <div className="container">
           <div className="row">
             <div className="col s8">
