@@ -7,6 +7,7 @@ import StockItems from './pages/stockItems';
 import Cart from './pages/cart';
 import Item from './pages/item';
 import Order from './pages/order';
+import ErrorMessage from './components/error';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,7 +21,8 @@ export default class App extends React.Component {
     this.state = {
       route: parseRoute(window.location.hash),
       stock: {
-        isLoading: true,
+        loading: true,
+        error: false,
         items: []
       },
       cart: []
@@ -39,12 +41,13 @@ export default class App extends React.Component {
         this.setState({
           stock: {
             items: data,
-            isLoading: false
+            loading: false
           }
         });
       })
       .catch(err => {
         console.error(err);
+        this.setState({ error: true });
       });
   }
 
@@ -71,9 +74,17 @@ export default class App extends React.Component {
   }
 
   renderPage() {
+
+    if (this.state.stock.error) {
+      return <ErrorMessage />;
+    }
+
     const { route } = this.state;
+
     if (route.path === '') {
-      return <Home stock={this.state.stock}/>;
+      return (
+        <Home stock={this.state.stock}/>
+      );
     }
     if (route.path === 'stock') {
       return <StockItems stock={this.state.stock}/>;
@@ -93,6 +104,9 @@ export default class App extends React.Component {
     if (route.path === 'order') {
       const orderId = route.params.get('orderId');
       return <Order orderId={orderId}/>;
+    }
+    if (route.path === 'error') {
+      return <ErrorMessage />;
     }
   }
 

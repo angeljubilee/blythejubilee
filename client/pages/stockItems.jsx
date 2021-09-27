@@ -1,6 +1,11 @@
 import React from 'react';
 
 export default function StockItems(props) {
+
+  if (!props.state.loading && !props.state.item) {
+    return (<div>No items in the shop.</div>);
+  }
+
   const itemList = props.stock.items.map(item => {
     return (
       <li key={item.itemId}>
@@ -35,16 +40,10 @@ export default function StockItems(props) {
                 </div>
                 <div className="card-content">
                   <section>
-                    <div className="row">
-                      <div className="col s12">
-                        <h6>{item.title.slice(0, 54)}...</h6>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col s5">
-                        In Stock: {item.numInStock}
-                      </div>
-                      <div className="col s6 darkpink-text">
+                    <p>{item.title.slice(0, 40)}...</p>
+                    <div>
+                      In Stock: {item.numInStock}
+                      <div className="darkpink-text">
                         ${item.price}
                       </div>
                     </div>
@@ -58,7 +57,7 @@ export default function StockItems(props) {
   });
 
   return (
-    props.stock.stockisLoading
+    props.stock.loading
       ? <div className="preloader-wrapper active">
           <div className="spinner-layer spinner-red-only">
             <div className="circle-clipper left">

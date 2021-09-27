@@ -2,6 +2,10 @@ import React from 'react';
 
 export default function Home(props) {
 
+  if (!props.stock.loading && !props.stock.items.length) {
+    return (<div>No items in the Shop</div>);
+  }
+
   const itemList = props.stock.items.map(item => {
     return (
       <li key={item.itemId}>
@@ -55,7 +59,7 @@ export default function Home(props) {
   });
 
   return (
-    props.stock.isLoading
+    props.stock.loading
       ? <div className="preloader-wrapper active">
         <div className="spinner-layer spinner-red-only">
           <div className="circle-clipper left">

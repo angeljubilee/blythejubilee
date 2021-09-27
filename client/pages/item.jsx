@@ -1,10 +1,13 @@
 import React from 'react';
 import M from 'materialize-css';
+import ErrorMessage from '../components/error';
 
 export default class Item extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
+      error: false,
       item: null,
       vars: null,
       qty: 1
@@ -25,9 +28,17 @@ export default class Item extends React.Component {
         for (const key in item.vars) {
           defaultVars[key] = item.vars[key][0];
         }
-        this.setState({ vars: defaultVars });
+        this.setState({
+          vars: defaultVars,
+          loading: false
+        });
         this.setState({ item });
+      })
+      .catch(error => {
+        console.error(error);
+        this.setState({ error: true });
       });
+    this.setState({ loading: true });
   }
 
   componentDidUpdate() {
@@ -56,9 +67,14 @@ export default class Item extends React.Component {
   }
 
   render() {
+    if (this.state.error) {
+      return <ErrorMessage />;
+    }
+
     if (!this.state.item) {
       return <div>Product not found</div>;
     }
+
     const opts = {};
     for (const key in this.state.item.vars) {
       const opt = this.state.item.vars[key].map((variation, index) => {
@@ -94,41 +110,41 @@ export default class Item extends React.Component {
     }
 
     return (
-        <div className="container-max-70">
-          <div className="product-details margin-top-1">
-            <div className="row">
-              <div className="col m1"></div>
-              <div className="col s12 m4">
-                <img src={this.state.item.url}></img>
-              </div>
-              <div className="col m1"></div>
-              <div className="col s12 m5">
-                <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
-                  <h6>{this.state.item.title}</h6>
-                  <h6>{this.state.item.price}</h6>
-                  {variations}
-                  <div className="row">
-                    <div className="col s4 m2">
-                      <label>Qty</label>
-                      <select ref={this.select1} onChange={this.addQuantity} className="qty-input">
-                        <QtyOptions num={this.state.item.numInStock} />
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col s11 hide-on-med-and-up">
-                      <button>Add to Cart</button>
-                    </div>
-                    <div className="col s4 right hide-on-small-only">
-                      <button>Add to Cart</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div className="col m1"></div>
+      <div className="container-max-70">
+        <div className="product-details margin-top-1">
+          <div className="row">
+            <div className="col m1"></div>
+            <div className="col s12 m4">
+              <img src={this.state.item.url}></img>
             </div>
+            <div className="col m1"></div>
+            <div className="col s12 m5">
+              <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
+                <h6>{this.state.item.title}</h6>
+                <h6>{this.state.item.price}</h6>
+                {variations}
+                <div className="row">
+                  <div className="col s4 m2">
+                    <label>Qty</label>
+                    <select ref={this.select1} onChange={this.addQuantity} className="qty-input">
+                      <QtyOptions num={this.state.item.numInStock} />
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col s11 hide-on-med-and-up">
+                    <button>Add to Cart</button>
+                  </div>
+                  <div className="col s4 right hide-on-small-only">
+                    <button>Add to Cart</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div className="col m1"></div>
           </div>
         </div>
+      </div>
     );
   }
 }

@@ -20,7 +20,9 @@ export default class AddItemForm extends React.Component {
       price: '',
       numInStock: '',
       size: '',
-      sizeList: []
+      sizeList: [],
+      loading: false,
+      error: false
     };
   }
 
@@ -35,11 +37,16 @@ export default class AddItemForm extends React.Component {
       .then(res => res.json())
       .then(result => {
         const url = `${result.url}`;
-        this.setState({ url: url });
+        this.setState({
+          url: url,
+          loading: false
+        });
       })
       .catch(err => {
         console.error(err);
+        this.setState({ error: true });
       });
+    this.setState({ loading: true });
   }
 
   handleSubmit(event) {
@@ -104,6 +111,9 @@ export default class AddItemForm extends React.Component {
   }
 
   render() {
+    if (this.state.error) {
+      return <div>Error loading photo</div>;
+    }
     const chips = this.state.sizeList.map((size, index) => {
       return <div className="chip" key={index}>{size}</div>;
     });
@@ -115,25 +125,37 @@ export default class AddItemForm extends React.Component {
             ? <div className="card">
                 <img src={this.state.url}></img>
               </div>
-            : <div className="flex-container box millenial-pink">
-                <form className="no-autoinit">
-                  <label htmlFor="image" className="center-align">
-                    <div className="add-photo">
-                      <span className="material-icons white-text">
-                        photo_camera
-                      </span>
-                      <h6 className="white-text">Add Photo</h6>
+            : this.state.loading
+              ? <div className="preloader-wrapper active">
+                  <div className="spinner-layer spinner-red-only">
+                    <div className="circle-clipper left">
+                      <div className="circle"></div>
+                    </div><div className="gap-patch">
+                      <div className="circle"></div>
+                    </div><div className="circle-clipper right">
+                      <div className="circle"></div>
                     </div>
-                  </label>
-                  <input
-                    type="file"
-                    name="image"
-                    id="image"
-                    className="visually-hidden"
-                    onChange={this.handleSubmitPhoto}
-                  />
-                </form>
-              </div>
+                  </div>
+                </div>
+              : <div className="flex-container box millenial-pink">
+                  <form className="no-autoinit">
+                    <label htmlFor="image" className="center-align">
+                      <div className="add-photo">
+                        <span className="material-icons white-text">
+                          photo_camera
+                        </span>
+                        <h6 className="white-text">Add Photo</h6>
+                      </div>
+                    </label>
+                    <input
+                      type="file"
+                      name="image"
+                      id="image"
+                      className="visually-hidden"
+                      onChange={this.handleSubmitPhoto}
+                    />
+                  </form>
+                </div>
          }
         </div>
         <form onSubmit={this.handleSubmit}>
