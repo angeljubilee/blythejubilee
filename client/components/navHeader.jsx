@@ -15,9 +15,8 @@ export default class NavHeader extends React.Component {
       hover: true,
       coverTrigger: false
     };
-
-    M.Dropdown.init(this.dropdown1.current, options);
     M.Dropdown.init(this.dropdown2.current, options);
+    M.Dropdown.init(this.dropdown1.current, options);
   }
 
   render() {
@@ -30,7 +29,7 @@ export default class NavHeader extends React.Component {
       </ul>
       <nav>
         <div className="nav-wrapper white">
-            <a className="nav-menu hide-on-large-only dropdown-trigger darkpink-text margin-left-1"
+          <a className="nav-menu hide-on-large-only dropdown-trigger darkpink-text margin-left-1"
               href="#!"
               data-target="dropdown"
               ref={this.dropdown1}>
@@ -42,7 +41,7 @@ export default class NavHeader extends React.Component {
             BlytheJubilee
           </a>
           <ul className="right">
-              <li className="hide-on-med-and-down">
+            <li className="hide-on-med-and-down">
               <a className="dropdown-trigger darkpink-text"
                 href="#!"
                 data-target="dropdown"

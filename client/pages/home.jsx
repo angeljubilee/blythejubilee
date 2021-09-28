@@ -41,7 +41,7 @@ export default function Home(props) {
           </div>
         </div>
         <div className="hide-on-med-and-down">
-          <div className="col m3">
+          <div className="col l3">
             <a href={`#items?itemId=${item.itemId}`}>
               <div className="card medium">
                 <div className="card-image">

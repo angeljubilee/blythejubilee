@@ -44,8 +44,6 @@ button {
   color: white;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 
 a {
@@ -164,8 +162,11 @@ a {
     text-transform: capitalize;
     color: white;
     padding: 1rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+  }
+
+  .payment-button {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 
   .float-right {

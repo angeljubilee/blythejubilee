@@ -180,17 +180,18 @@ export default class Cart extends React.Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col s6">
+                    <div className="col s8">
                       <h6 className="bold-text">Order total ({this.props.cart.length} items)</h6>
                     </div>
-                    <div className="col s6 right-align">
-                      <p className="bold-text">${total}</p>
+                    <div className="col s4 right-align">
+                      <h6 className="bold-text">${total}</h6>
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col s12 l6 right" style={checkinStyle}>
-                      <button>Login to checkout</button>
-                      <button className="orange margin-top-1" onClick={this.guestCheckout}>
+                    <div className="col s12" style={checkinStyle}>
+                      <button className="payment-button">Login to checkout</button>
+                      <button className="payment-button orange"
+                        onClick={this.guestCheckout}>
                         Checkout as Guest
                       </button>
                     </div>
