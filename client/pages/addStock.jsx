@@ -54,11 +54,13 @@ export default class AddItemForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
+    const price = parseInt(this.state.price).toFixed(2);
+
     const newItem = {
       title: this.state.title,
       description: this.state.description,
       url: this.state.url,
-      price: this.state.price,
+      price: price,
       numInStock: this.state.numInStock,
       sizeList: this.state.sizeList
     };
@@ -108,10 +110,12 @@ export default class AddItemForm extends React.Component {
   }
 
   addSize(event) {
-    this.setState({
-      sizeList: [...this.state.sizeList, this.state.size],
-      size: ''
-    });
+    if (this.state.size.length) {
+      this.setState({
+        sizeList: [...this.state.sizeList, this.state.size],
+        size: ''
+      });
+    }
   }
 
   render() {
@@ -160,7 +164,7 @@ export default class AddItemForm extends React.Component {
                 <h6>Title</h6>
                 <input type="text"
                   value={this.state.title}
-                  onChange={this.handleTitleChange} />
+                  onChange={this.handleTitleChange} required />
               </div>
             </div>
             <div className="row">
@@ -169,7 +173,7 @@ export default class AddItemForm extends React.Component {
                 <textarea
                   value={this.state.description}
                   onChange={this.handleDescriptionChange}
-                  className="margin-top-1"/>
+                  className="margin-top-1" required/>
               </div>
             </div>
             <div className="row">
@@ -199,17 +203,19 @@ export default class AddItemForm extends React.Component {
             <div className="row">
               <div className="col s2 m1">
                 <h6>Price</h6>
-                <input type="text"
+                <input type="number"
                   value={this.state.price}
-                  onChange={this.handlePriceChange} />
+                  onChange={this.handlePriceChange}
+                  required/>
               </div>
             </div>
             <div className="row">
               <div className="col s2 m1">
                 <h6>Qty</h6>
-                <input type="text"
+                <input type="number"
                   value={this.state.numInStock}
-                  onChange={this.handleNumInStockChange} />
+                  onChange={this.handleNumInStockChange}
+                  required/>
               </div>
             </div>
           </div>
