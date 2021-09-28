@@ -85,7 +85,7 @@ export default class Item extends React.Component {
       const opt = this.state.item.vars[key].map((variation, index) => {
         const { value, varId } = variation;
         return (
-          <div className="col s4 m4" key={index}>
+          <div className="col s4 l3" key={index}>
             <label>
               <input name={key}
                 type="radio"
@@ -117,18 +117,18 @@ export default class Item extends React.Component {
     return (
       <div className="product-details margin-top-1">
         <div className="row">
-          <div className="col m1"></div>
-          <div className="col s12 m4">
+          <div className="col l1"></div>
+          <div className="col s12 l4">
             <img src={this.state.item.url}></img>
           </div>
-          <div className="col m1"></div>
-          <div className="col s12 m5">
+          <div className="col l1"></div>
+          <div className="col s12 l5">
             <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
               <h6>{this.state.item.title}</h6>
               <h6>{this.state.item.price}</h6>
               {variations}
               <div className="row">
-                <div className="col s4 m2">
+                <div className="col s4 l4">
                   <label>Qty</label>
                   <select ref={this.select1} onChange={this.addQuantity} className="qty-input">
                     <QtyOptions num={this.state.item.numInStock} />
@@ -136,16 +136,16 @@ export default class Item extends React.Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col s11 hide-on-med-and-up">
+                <div className="col s11 hide-on-large-only">
                   <button>Add to Cart</button>
                 </div>
-                <div className="col s4 right hide-on-small-only">
+                <div className="col s5 right hide-on-med-and-down">
                   <button>Add to Cart</button>
                 </div>
               </div>
             </form>
           </div>
-          <div className="col m1"></div>
+          <div className="col l1"></div>
         </div>
       </div>
     );
