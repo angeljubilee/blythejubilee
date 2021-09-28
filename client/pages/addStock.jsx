@@ -52,6 +52,8 @@ export default class AddItemForm extends React.Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
+
     const newItem = {
       title: this.state.title,
       description: this.state.description,
@@ -214,7 +216,6 @@ export default class AddItemForm extends React.Component {
           <div className="container-max-70">
             <button
               type="submit"
-              name="action"
               className="margin-bottom-1">
               Save
             </button>
