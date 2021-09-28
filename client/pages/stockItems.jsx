@@ -11,7 +11,7 @@ export default function StockItems(props) {
   const itemList = props.stock.items.map(item => {
     return (
       <li key={item.itemId}>
-        <div className="hide-on-med-and-up">
+        <div className="hide-on-large-only">
           <div className="col s12">
             <div className="card horizontal">
               <div className="card-image col s4">
@@ -33,7 +33,7 @@ export default function StockItems(props) {
             </div>
           </div>
         </div>
-        <div className="hide-on-small-only">
+        <div className="hide-on-med-and-down">
           <div className="container">
             <div className="col m3">
               <div className="card medium">
@@ -42,7 +42,7 @@ export default function StockItems(props) {
                 </div>
                 <div className="card-content">
                   <section>
-                    <p>{item.title.slice(0, 40)}...</p>
+                    <p>{item.title.slice(0, 10)}...</p>
                     <div>
                       In Stock: {item.numInStock}
                       <div className="darkpink-text">
