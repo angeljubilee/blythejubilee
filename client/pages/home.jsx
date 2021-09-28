@@ -19,7 +19,7 @@ export default function Home(props) {
   const itemList = props.stock.items.map(item => {
     return (
       <li key={item.itemId}>
-        <div className="hide-on-med-and-up">
+        <div className="hide-on-large-only">
           <div className="col s6">
             <a href={`#items?itemId=${item.itemId}`} >
               <div className="card small">
@@ -40,7 +40,7 @@ export default function Home(props) {
             </a>
           </div>
         </div>
-        <div className="hide-on-small-only">
+        <div className="hide-on-med-and-down">
           <div className="col m3">
             <a href={`#items?itemId=${item.itemId}`}>
               <div className="card medium">
@@ -51,7 +51,7 @@ export default function Home(props) {
                   <section>
                     <div className="row">
                       <div className="col s12">
-                        <h6>{item.title.slice(0, 50)}...</h6>
+                        <h6>{item.title.slice(0, 36)}...</h6>
                       </div>
                     </div>
                     <div className="row">
