@@ -19,7 +19,7 @@ export default function Home(props) {
   const itemList = props.stock.items.map(item => {
     return (
       <li key={item.itemId}>
-        <div className="hide-on-large-only">
+        <div className="hide-on-med-and-up">
           <div className="col s6">
             <a href={`#items?itemId=${item.itemId}`} >
               <div className="card small">
@@ -40,8 +40,8 @@ export default function Home(props) {
             </a>
           </div>
         </div>
-        <div className="hide-on-med-and-down">
-          <div className="col l3">
+        <div className="hide-on-small-only">
+          <div className="col m6 l3">
             <a href={`#items?itemId=${item.itemId}`}>
               <div className="card medium">
                 <div className="card-image">

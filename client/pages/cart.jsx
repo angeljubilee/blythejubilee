@@ -189,8 +189,7 @@ export default class Cart extends React.Component {
                   </div>
                   <div className="row">
                     <div className="col s12" style={checkinStyle}>
-                      <button className="payment-button">Login to checkout</button>
-                      <button className="payment-button orange"
+                      <button className="payment-button"
                         onClick={this.guestCheckout}>
                         Checkout as Guest
                       </button>

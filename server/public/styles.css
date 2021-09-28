@@ -46,6 +46,14 @@ button {
   padding-bottom: 1rem;
 }
 
+button:active {
+  background-color: #f88792 !important;
+}
+
+button:focus {
+  background-color: #f88792 !important;
+}
+
 a {
   color: black;
   text-decoration: none;
