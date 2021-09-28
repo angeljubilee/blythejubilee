@@ -57,10 +57,14 @@ export default class App extends React.Component {
   }
 
   addNewItem(newItem) {
+
+    const newItems = [...this.state.stock.items];
+    newItems.unshift(newItem);
+
     this.setState({
       stock: {
         ...this.state.stock,
-        items: [...this.state.stock.items, newItem]
+        items: newItems
       }
     });
   }
