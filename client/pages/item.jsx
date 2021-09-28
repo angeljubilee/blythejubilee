@@ -68,7 +68,7 @@ export default class Item extends React.Component {
   }
 
   render() {
-    if (this.state.stock.error) {
+    if (this.state.error) {
       return <ErrorMessage msg="Connection error" />;
     }
 
@@ -113,8 +113,7 @@ export default class Item extends React.Component {
     return (
       this.state.loading
         ? <LoadingSpinner />
-        : <div className="container-max-70">
-          <div className="product-details margin-top-1">
+        : <div className="product-details margin-top-1">
             <div className="row">
               <div className="col m1"></div>
               <div className="col s12 m4">
@@ -147,7 +146,6 @@ export default class Item extends React.Component {
               <div className="col m1"></div>
             </div>
           </div>
-        </div>
     );
   }
 }
