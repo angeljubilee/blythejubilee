@@ -72,8 +72,12 @@ export default class Item extends React.Component {
       return <ErrorMessage msg="Connection error" />;
     }
 
+    if (this.state.loading) {
+      return <LoadingSpinner />;
+    }
+
     if (!this.state.item) {
-      return <div>Product not found</div>;
+      return <ErrorMessage msg="Product not found" />;
     }
 
     const opts = {};
@@ -81,7 +85,7 @@ export default class Item extends React.Component {
       const opt = this.state.item.vars[key].map((variation, index) => {
         const { value, varId } = variation;
         return (
-          <div className="col s4 m2" key={index}>
+          <div className="col s4 m4" key={index}>
             <label>
               <input name={key}
                 type="radio"
@@ -111,41 +115,39 @@ export default class Item extends React.Component {
     }
 
     return (
-      this.state.loading
-        ? <LoadingSpinner />
-        : <div className="product-details margin-top-1">
-            <div className="row">
-              <div className="col m1"></div>
-              <div className="col s12 m4">
-                <img src={this.state.item.url}></img>
-              </div>
-              <div className="col m1"></div>
-              <div className="col s12 m5">
-                <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
-                  <h6>{this.state.item.title}</h6>
-                  <h6>{this.state.item.price}</h6>
-                  {variations}
-                  <div className="row">
-                    <div className="col s4 m2">
-                      <label>Qty</label>
-                      <select ref={this.select1} onChange={this.addQuantity} className="qty-input">
-                        <QtyOptions num={this.state.item.numInStock} />
-                      </select>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col s11 hide-on-med-and-up">
-                      <button>Add to Cart</button>
-                    </div>
-                    <div className="col s4 right hide-on-small-only">
-                      <button>Add to Cart</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div className="col m1"></div>
-            </div>
+      <div className="product-details margin-top-1">
+        <div className="row">
+          <div className="col m1"></div>
+          <div className="col s12 m4">
+            <img src={this.state.item.url}></img>
           </div>
+          <div className="col m1"></div>
+          <div className="col s12 m5">
+            <form className="no-autoinit margin-left-1" onSubmit={this.handleSubmit}>
+              <h6>{this.state.item.title}</h6>
+              <h6>{this.state.item.price}</h6>
+              {variations}
+              <div className="row">
+                <div className="col s4 m2">
+                  <label>Qty</label>
+                  <select ref={this.select1} onChange={this.addQuantity} className="qty-input">
+                    <QtyOptions num={this.state.item.numInStock} />
+                  </select>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col s11 hide-on-med-and-up">
+                  <button>Add to Cart</button>
+                </div>
+                <div className="col s4 right hide-on-small-only">
+                  <button>Add to Cart</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div className="col m1"></div>
+        </div>
+      </div>
     );
   }
 }
