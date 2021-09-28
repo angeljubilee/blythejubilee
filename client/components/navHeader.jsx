@@ -30,7 +30,7 @@ export default class NavHeader extends React.Component {
       <nav>
         <div className="nav-wrapper white">
           <a className="nav-menu hide-on-large-only dropdown-trigger darkpink-text margin-left-1"
-              href="#!"
+              href="#"
               data-target="dropdown"
               ref={this.dropdown1}>
               <span className="material-icons darkpink-text nav-link md-48">
@@ -43,7 +43,7 @@ export default class NavHeader extends React.Component {
           <ul className="right">
             <li className="hide-on-med-and-down">
               <a className="dropdown-trigger darkpink-text"
-                href="#!"
+                href="#stock"
                 data-target="dropdown"
                 ref={this.dropdown2}>
                 <h6 className="nav-link">Admin Account</h6>
