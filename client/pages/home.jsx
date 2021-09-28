@@ -9,11 +9,7 @@ export default function Home(props) {
   }
 
   if (!props.stock.loading && !props.stock.items.length) {
-    return (
-      <div className="flex-container">
-        No items in the Shop
-      </div>
-    );
+    return <ErrorMessage msg="No items in the shop" />;
   }
 
   const itemList = props.stock.items.map(item => {
