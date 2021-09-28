@@ -102,6 +102,10 @@ export default class Cart extends React.Component {
 
   render() {
 
+    if (!this.props.cart.length) {
+      return <ErrorMessage msg="No items in your cart." />;
+    }
+
     const subtotal = this.props.cart.reduce((acc, item) => {
       return acc + parseInt(item.price);
     }, 0);
@@ -130,86 +134,80 @@ export default class Cart extends React.Component {
     }
 
     return (
-      this.props.cart.length
-        ? <>
-            <div style={errorStyle}>
-              <ErrorMessage msg='Transaction error' />
+      <>
+        <div style={errorStyle}>
+          <ErrorMessage msg='Transaction error' />
+        </div>
+        <div className="flex-container" style={loadingStyle}>
+          <LoadingSpinner />
+        </div>
+        <div className="container" style={cartStyle}>
+          <div className="row">
+            <div className="col s12">
+              <h5 className="bold-text">Your Shopping bag</h5>
             </div>
-            <div className="flex-container" style={loadingStyle}>
-              <LoadingSpinner />
+          </div>
+          <div className="row">
+            <div className="col s12 l7">
+              <ul>
+                <CartItem cart={this.props.cart} handleClose={this.handleClickClose} />
+              </ul>
             </div>
-            <div className="container" style={cartStyle}>
+            <div className="col m1"></div>
+            <div className="col s12 l4">
               <div className="row">
-                <div className="col s12">
-                  <h5 className="bold-text">Your Shopping bag</h5>
+                <h6 className="bold-text">Order Summary</h6>
+              </div>
+              <div className="row">
+                <div className="col s6">
+                  Subtotal
+                </div>
+                <div className="col s6 right-align">
+                  ${subtotal.toFixed(2)}
                 </div>
               </div>
               <div className="row">
-                <div className="col s12 l7">
-                  <ul>
-                    <CartItem cart={this.props.cart} handleClose={this.handleClickClose} />
-                  </ul>
+                <div className="col s6 ">
+                  Subtotal
                 </div>
-                <div className="col m1"></div>
-                <div className="col s12 l4">
-                  <div className="row">
-                    <h6 className="bold-text">Order Summary</h6>
-                  </div>
-                  <div className="row">
-                    <div className="col s6">
-                      Subtotal
-                    </div>
-                    <div className="col s6 right-align">
-                      ${subtotal.toFixed(2)}
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col s6 ">
-                      Subtotal
-                    </div>
-                    <div className="col s6 right-align">
-                      ${subtotal}
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col s6">
-                      Shipping
-                    </div>
-                    <div className="col s6 right-align">
-                      ${shipping}
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col s8">
-                      <h6 className="bold-text">Order total ({this.props.cart.length} items)</h6>
-                    </div>
-                    <div className="col s4 right-align">
-                      <h6 className="bold-text">${total}</h6>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col s12" style={checkinStyle}>
-                      <button className="payment-button"
-                        onClick={this.guestCheckout}>
-                        Checkout as Guest
-                      </button>
-                    </div>
-                  </div>
-                  <div style={paypalStyle}>
-                    <PaypalButton numItems={this.props.cart.length}
-                      total={total}
-                      newOrder={this.handleOrder}
-                      error={this.handleError} />
-                  </div>
+                <div className="col s6 right-align">
+                  ${subtotal}
                 </div>
               </div>
+              <div className="row">
+                <div className="col s6">
+                  Shipping
+                </div>
+                <div className="col s6 right-align">
+                  ${shipping}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col s8">
+                  <p className="bold-text">Order total ({this.props.cart.length} items)</p>
+                </div>
+                <div className="col s4 right-align">
+                  <p className="bold-text">${total}</p>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col s12" style={checkinStyle}>
+                  <button className="payment-button"
+                    onClick={this.guestCheckout}>
+                    Checkout as Guest
+                  </button>
+                </div>
+              </div>
+              <div style={paypalStyle}>
+                <PaypalButton numItems={this.props.cart.length}
+                  total={total}
+                  newOrder={this.handleOrder}
+                  error={this.handleError} />
+              </div>
             </div>
-          </>
-        : <div className="container">
-         <div className="col s12">
-           No items in your cart.
-         </div>
-       </div>
+          </div>
+        </div>
+      </>
     );
   }
 }
