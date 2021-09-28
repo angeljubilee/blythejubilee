@@ -145,13 +145,13 @@ export default class Cart extends React.Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col s12 m7">
+                <div className="col s12 l7">
                   <ul>
                     <CartItem cart={this.props.cart} handleClose={this.handleClickClose} />
                   </ul>
                 </div>
                 <div className="col m1"></div>
-                <div className="col s12 m4">
+                <div className="col s12 l4">
                   <div className="row">
                     <h6 className="bold-text">Order Summary</h6>
                   </div>
@@ -188,7 +188,7 @@ export default class Cart extends React.Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col s12 m6 right" style={checkinStyle}>
+                    <div className="col s12 l6 right" style={checkinStyle}>
                       <button>Login to checkout</button>
                       <button className="orange margin-top-1" onClick={this.guestCheckout}>
                         Checkout as Guest
