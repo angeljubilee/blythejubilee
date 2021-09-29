@@ -11,14 +11,11 @@ const imgStyle = {
 
 };
 
-function Img(data) {
-  const { src, alt, className, style = {} } = data;
+function Img(props) {
   return (
     <img
-      src={src}
-      alt={alt}
-      style={{ ...imgStyle.img, ...style }}
-      className={className}
+      src={props.src}
+      style={{ ...imgStyle.img, ...props.style }}
     />
   );
 }

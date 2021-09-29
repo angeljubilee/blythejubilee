@@ -53,11 +53,11 @@ const style = {
 
 };
 
-function Icon(style, url) {
+function Icon(props) {
   return (
     <Img
-      style={style}
-      src={url}
+      style={props.style}
+      src={props.url}
     />
   );
 }
