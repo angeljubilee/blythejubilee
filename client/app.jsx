@@ -71,14 +71,14 @@ export default class App extends React.Component {
 
   addCartItem(newItem) {
     const newCart = [...this.state.cart];
-    const matchingItem = newCart.findIndex(item => _.isEqual(item, newItem));
+    const matchingItem = newCart.findIndex(item => isMatchingItem(item, newItem));
 
     if (matchingItem !== -1) {
       newCart[matchingItem].qty++;
-      this.setState({ cart: newCart });
     } else {
-      this.setState({ cart: [...this.state.cart, newItem] });
+      newCart.push(newItem);
     }
+    this.setState({ cart: newCart });
   }
 
   removeCartItem(itemIndex) {
@@ -129,4 +129,14 @@ export default class App extends React.Component {
       </>
     );
   }
+}
+
+function isMatchingItem(item, newItem) {
+  if (item.itemId !== newItem.itemId) {
+    return false;
+  }
+  if (!_.isEqual(item.vars, newItem.vars)) {
+    return false;
+  }
+  return true;
 }
