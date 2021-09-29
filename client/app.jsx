@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import parseRoute from './lib/parse-route';
 import NavHeader from './components/navHeader';
 import AddItemForm from './pages/addStock';
@@ -57,7 +58,6 @@ export default class App extends React.Component {
   }
 
   addNewItem(newItem) {
-
     const newItems = [...this.state.stock.items];
     newItems.unshift(newItem);
 
@@ -69,14 +69,22 @@ export default class App extends React.Component {
     });
   }
 
-  addCartItem(item) {
-    this.setState({ cart: [...this.state.cart, item] });
+  addCartItem(newItem) {
+    const newCart = [...this.state.cart];
+    const matchingItem = newCart.findIndex(item => isMatchingItem(item, newItem));
+
+    if (matchingItem !== -1) {
+      newCart[matchingItem].qty++;
+    } else {
+      newCart.push(newItem);
+    }
+    this.setState({ cart: newCart });
   }
 
-  removeCartItem(itemId) {
-    this.setState({
-      cart: this.state.cart.filter(item => item.itemId !== itemId)
-    });
+  removeCartItem(itemIndex) {
+    const newCart = [...this.state.cart];
+    newCart.splice(itemIndex, 1);
+    this.setState({ cart: newCart });
   }
 
   resetCart() {
@@ -121,4 +129,14 @@ export default class App extends React.Component {
       </>
     );
   }
+}
+
+function isMatchingItem(item, newItem) {
+  if (item.itemId !== newItem.itemId) {
+    return false;
+  }
+  if (!_.isEqual(item.vars, newItem.vars)) {
+    return false;
+  }
+  return true;
 }
