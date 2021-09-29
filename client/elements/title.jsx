@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Grid from '../layout/Grid';
+import Grid from '../layout/grid';
 
 const style = {
 

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Grid from './layout/Grid';
-import Header from './elements/Header';
-import Title from './elements/Title';
-import Body from './elements/Body';
-import OrderItems from './elements/OrderItems';
-import OrderSummary from './elements/OrderSummary';
+import Grid from './layout/grid';
+import Header from './elements/header';
+import Title from './elements/title';
+import Body from './elements/body';
+import OrderItems from './elements/order-items';
+import OrderSummary from './elements/order-summary';
 
 const style = {
 

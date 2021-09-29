@@ -1,7 +1,7 @@
 import React from 'react';
 import M from 'materialize-css';
 
-export default class NavHeader extends React.Component {
+export default class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.dropdown1 = React.createRef();
