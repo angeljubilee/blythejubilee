@@ -23,7 +23,7 @@ export default function StockItems(props) {
                     <h6>{item.title.slice(0, 35)}...</h6>
                     <div>
                       In Stock: {item.numInStock}
-                      <div className="darkpink-text">
+                      <div className="dark-pink-text">
                         ${item.price}
                       </div>
                     </div>
@@ -45,7 +45,7 @@ export default function StockItems(props) {
                     <p>{item.title.slice(0, 10)}...</p>
                     <div>
                       In Stock: {item.numInStock}
-                      <div className="darkpink-text">
+                      <div className="dark-pink-text">
                         ${item.price}
                       </div>
                     </div>

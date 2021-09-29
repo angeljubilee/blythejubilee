@@ -136,7 +136,7 @@ export default class AddItemForm extends React.Component {
               </div>
             : this.state.loading
               ? <LoadingSpinner />
-              : <div className="flex-container box millenial-pink">
+              : <div className="flex-container box millennial-pink">
                   <form className="no-autoinit">
                     <label htmlFor="image" className="center-align">
                       <div className="add-photo">

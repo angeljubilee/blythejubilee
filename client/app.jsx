@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import parseRoute from './lib/parse-route';
-import NavHeader from './components/navHeader';
-import AddItemForm from './pages/addStock';
+import Navbar from './components/navbar';
+import AddItemForm from './pages/add-stock';
 import Home from './pages/home';
-import StockItems from './pages/stockItems';
+import StockItems from './pages/stock';
 import Cart from './pages/cart';
 import Item from './pages/item';
 import Order from './pages/order';
@@ -124,7 +124,7 @@ export default class App extends React.Component {
   render() {
     return (
       <>
-        <NavHeader cartNum={this.state.cart.length}/>
+        <Navbar cartNum={this.state.cart.length}/>
         { this.renderPage() }
       </>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Grid from '../layout/Grid';
-import Img from './Img';
+import Grid from '../layout/grid';
+import Img from './img';
 
 const style = {
 
