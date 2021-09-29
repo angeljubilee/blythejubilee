@@ -144,7 +144,7 @@ export default class Cart extends React.Component {
         <div className="container" style={cartStyle}>
           <div className="row">
             <div className="col s12">
-              <h5 className="bold-text">Your Shopping bag</h5>
+              <h5 className="bold-text">Your Shopping Bag</h5>
             </div>
           </div>
           <div className="row">
