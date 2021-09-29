@@ -167,14 +167,6 @@ export default class Cart extends React.Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col s6 ">
-                  Subtotal
-                </div>
-                <div className="col s6 right-align">
-                  ${subtotal}
-                </div>
-              </div>
-              <div className="row">
                 <div className="col s6">
                   Shipping
                 </div>
