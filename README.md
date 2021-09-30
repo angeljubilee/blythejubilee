@@ -71,8 +71,8 @@ app.
 1. Clone the repository.
 
     ```shell
-    git clone https://github.com/Learning-Fuze/sgt-react
-    cd sgt-react
+    git clone git@github.com:angeljubilee/blythejubilee.git
+    cd blythejubilee
     ```
 
 1. Install all dependencies with NPM.
@@ -87,7 +87,9 @@ app.
     cp .env.example .env
     ```
 
-1. Fill in the API Keys for Google if using Gmail for your shop email.
+1. Fill in the API Keys for Google if using Gmail for your shop email and Amazon.
+
+1. Fill in your shop's email for EMAIL_USER.
 
 1. Update the PayPal script in index.html with your own PayPal clientId.
 
