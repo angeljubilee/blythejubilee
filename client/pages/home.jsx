@@ -39,7 +39,7 @@ export default function Home(props) {
         <div className="hide-on-small-only">
           <div className="col m6 l4">
             <a href={`#items?itemId=${item.itemId}`}>
-              <div className="card medium">
+              <div className="card">
                 <div className="card-image">
                   <img src={item.url} />
                 </div>
