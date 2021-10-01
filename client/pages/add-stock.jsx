@@ -180,7 +180,7 @@ export default class AddItemForm extends React.Component {
               <div className="col s12">
                 <h6>Size</h6>
                 <div className="row flex-center">
-                  <div className="col s2 m1">
+                  <div className="col s3 m2">
                     <input type="text"
                       value={this.state.size}
                       onChange={this.handleSize} />
@@ -201,7 +201,7 @@ export default class AddItemForm extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="col s2 m1">
+              <div className="col s3 m2">
                 <h6>Price</h6>
                 <input type="number"
                   value={this.state.price}
@@ -210,7 +210,7 @@ export default class AddItemForm extends React.Component {
               </div>
             </div>
             <div className="row">
-              <div className="col s2 m1">
+              <div className="col s3 m2">
                 <h6>Qty</h6>
                 <input type="number"
                   value={this.state.numInStock}

@@ -35,8 +35,8 @@ export default function StockItems(props) {
         </div>
         <div className="hide-on-med-and-down">
           <div className="container">
-            <div className="col m3">
-              <div className="card medium">
+            <div className="col m4">
+              <div className="card small">
                 <div className="card-image">
                   <img src={item.url} />
                 </div>
