@@ -7,12 +7,8 @@ export default class AddItemForm extends React.Component {
     super(props);
 
     this.handleSubmitPhoto = this.handleSubmitPhoto.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleNumInStockChange = this.handleNumInStockChange.bind(this);
-    this.handlePriceChange = this.handlePriceChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSize = this.handleSize.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.addSize = this.addSize.bind(this);
 
     this.state = {
@@ -89,24 +85,12 @@ export default class AddItemForm extends React.Component {
       });
   }
 
-  handleTitleChange(event) {
-    this.setState({ title: event.target.value });
-  }
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
 
-  handleDescriptionChange(event) {
-    this.setState({ description: event.target.value });
-  }
-
-  handlePriceChange(event) {
-    this.setState({ price: event.target.value });
-  }
-
-  handleNumInStockChange(event) {
-    this.setState({ numInStock: event.target.value });
-  }
-
-  handleSize(event) {
-    this.setState({ size: event.target.value });
+    this.setState({ [name]: value });
   }
 
   addSize(event) {
@@ -163,16 +147,18 @@ export default class AddItemForm extends React.Component {
               <div className="col s12">
                 <h6>Title</h6>
                 <input type="text"
+                  name="title"
                   value={this.state.title}
-                  onChange={this.handleTitleChange} required />
+                  onChange={this.handleInputChange} required />
               </div>
             </div>
             <div className="row">
               <div className="col s12">
                 <h6>Description</h6>
                 <textarea
+                  name="description"
                   value={this.state.description}
-                  onChange={this.handleDescriptionChange}
+                  onChange={this.handleInputChange}
                   className="margin-top-1" required/>
               </div>
             </div>
@@ -182,8 +168,9 @@ export default class AddItemForm extends React.Component {
                 <div className="row flex-center">
                   <div className="col s3 m2">
                     <input type="text"
+                      name="size"
                       value={this.state.size}
-                      onChange={this.handleSize} />
+                      onChange={this.handleInputChange} />
                   </div>
                   <span className="material-icons plus-icon"
                     onClick={this.addSize}>
@@ -204,8 +191,9 @@ export default class AddItemForm extends React.Component {
               <div className="col s3 m2">
                 <h6>Price</h6>
                 <input type="number"
+                  name="price"
                   value={this.state.price}
-                  onChange={this.handlePriceChange}
+                  onChange={this.handleInputChange}
                   required/>
               </div>
             </div>
@@ -213,8 +201,9 @@ export default class AddItemForm extends React.Component {
               <div className="col s3 m2">
                 <h6>Qty</h6>
                 <input type="number"
+                  name="numInStock"
                   value={this.state.numInStock}
-                  onChange={this.handleNumInStockChange}
+                  onChange={this.handleInputChange}
                   required/>
               </div>
             </div>
